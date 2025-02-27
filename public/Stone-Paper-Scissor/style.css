@@ -2,9 +2,10 @@
   font-family: "Dangrek", "Roboto";
 }
 body {
-  background-color: #8cc461;
+  background: linear-gradient(0deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
   overflow: hidden;
 }
+
 .container {
   display: flex;
   flex-direction: column;
@@ -28,18 +29,24 @@ label, input, button {
   display: flex;
   justify-content: space-between;
   border-radius: 13px;
-  border: 2px solid #fff;
+  border: 8px solid #fff;
   padding: 15px;
   width: 800px;
   height: 120px;
 }
 .heading {
   color: #fff;
+  background-color: #000;
   font-family: Roboto;
   font-size: 30px;
   font-style: normal;
   font-weight: 600;
   letter-spacing: 4px;
+  border-radius: 10px;
+  border: 8px solid white;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  
 }
 .scoreboard {
   display: flex;
@@ -130,6 +137,12 @@ label, input, button {
   margin-top: 30px;
   right: 7%;
 }
+
+.reset_button{
+  background-color: purple;
+  color: white;
+  margin-top: 85vh;
+}
 .logo3 {
   position: absolute;
   top: 28%;
@@ -139,10 +152,10 @@ label, input, button {
 }
 @keyframes example {
   from {
-    background-color: #2eae19;
+    background-color: #FF0099;
   }
   to {
-    background-color: #3dc029;
+    background-color: #6f2a61;
   }
 }
 .bg img {
@@ -419,26 +432,30 @@ ul li::before {
 }
 .btn {
   text-align: right;
-  position: absolute;
+  
   margin-left: 85vw;
-  margin-top: 45vh;
+  margin-bottom: 20vh;
+  
 }
 .rules {
   border: 2px solid white;
   color: white;
   border-radius: 5px;
-  background-color: #8cc461;
+  background-color: purple;
   padding: 5px 20px;
   text-align: center;
   font-family: "Roboto Mono", monospace;
   letter-spacing: 3px;
   font-weight: bold;
+  font-size: 20px;
+  height: 60px;
 }
 .btn1 {
   text-align: right;
   position: absolute;
   margin-left: 60vw;
-  margin-top: 85vh;
+  margin-top: 91vh;
+  
 }
 #nxt {
   color: #fff;

@@ -6,6 +6,20 @@ body {
 .image-cup {
   margin-top: 25vh;
   margin-left: 42vw;
+  animation: bounce 1s infinite;
+
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 .star5 {
   position: absolute;

@@ -23,6 +23,42 @@ if (
   localStorage.setItem("clickcount2", 0);
 }
 
+function resetscore() {
+  
+  localStorage.setItem("clickcount", 0); 
+  localStorage.setItem("clickcount2", 0); 
+  
+  your_score.innerHTML = 0;
+  com_score.innerHTML = 0;
+
+  alert("Resetting your score!");
+}
+
+
+
+const resetButton = document.createElement("button");
+resetButton.innerText = "Reset Score";
+
+
+resetButton.style.marginLeft = "150px";
+
+
+resetButton.style.backgroundColor = "purple";
+resetButton.style.color = "white";
+resetButton.style.border = "2px solid white";
+resetButton.style.fontSize = "20px";
+resetButton.style.padding = "5px 20px";
+resetButton.style.cursor = "pointer";
+resetButton.style.borderRadius = "5px";
+
+
+resetButton.style.display = "inline-block";
+
+resetButton.onclick = resetscore;
+document.body.appendChild(resetButton);
+
+
+
 function displayscore() {
   if (
     localStorage.clickcount === "undefined" &&

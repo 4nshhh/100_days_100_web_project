@@ -7,15 +7,59 @@ body {
       margin: 0;
     overflow: hidden;
     }
-    
     #container{
         display: flex;
         justify-content: center;
         align-items: flex-start;
       height: 100% !important;
+      position: relative;
     
     }
     #canvas3d{
       width: 100% !important;
       height: 100% !important;
     }
+
+.animated-image-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0A1012;
+  background: url('circle.png') repeat;
+  background-size: 200px 200px;
+  animation: moveBackground 10s linear infinite;
+  z-index: 1;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+#myButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10; /* Ensure it is above all other elements */
+  padding: 15px 30px;
+  font-size: 18px;
+  color: #fff;
+  background-color: #ff5c5c;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+#myButton:hover {
+  background-color: #ff3c3c;
+  transform: scale(1.05);
+}

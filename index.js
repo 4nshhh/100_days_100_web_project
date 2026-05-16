@@ -11,11 +11,13 @@ if (typeof REPO_OWNER === 'undefined') {
     window.REPO_OWNER = "dhairyagothi";
     window.REPO_NAME = "100_days_100_web_project";
 }
+window.REPO_OWNER = window.REPO_OWNER || 'dhairyagothi';
+window.REPO_NAME = window.REPO_NAME || '100_days_100_web_project';
 
 let currentPage = 1;
 const itemsPerPage = 10;
-let projectData = []; 
-let filteredData = []; 
+let projectData = [];
+let filteredData = [];
 let currentCategory = 'all';
 let currentDifficulty = 'all';
 
@@ -28,7 +30,9 @@ async function fetchRepoStats() {
             fetch(`https://api.github.com/repos/${window.REPO_OWNER}/${window.REPO_NAME}`),
             fetch(`https://api.github.com/search/issues?q=repo:${window.REPO_OWNER}/${window.REPO_NAME}+type:pr+state:open`)
         ]);
+
         if (!repoRes.ok || !prRes.ok) return;
+
         const repoData = await repoRes.json();
         const prData = await prRes.json();
 
@@ -37,11 +41,13 @@ async function fetchRepoStats() {
         const issueEl = document.getElementById('issueCount');
         const prEl = document.getElementById('prCount');
 
-        if (starEl) starEl.textContent = repoData.stargazers_count.toLocaleString();
-        if (forkEl) forkEl.textContent = repoData.forks_count.toLocaleString();
-        if (issueEl) issueEl.textContent = (repoData.open_issues_count - prData.total_count).toLocaleString();
-        if (prEl) prEl.textContent = prData.total_count.toLocaleString();
-    } catch (error) { console.error("Stats fetch error:", error); }
+        if (starEl) starEl.textContent = (repoData.stargazers_count || 0).toLocaleString();
+        if (forkEl) forkEl.textContent = (repoData.forks_count || 0).toLocaleString();
+        if (issueEl) issueEl.textContent = Math.max(0, (repoData.open_issues_count || 0) - (prData.total_count || 0)).toLocaleString();
+        if (prEl) prEl.textContent = (prData.total_count || 0).toLocaleString();
+    } catch (error) { 
+        console.error("Stats fetch error:", error); 
+    }
 }
 
 // ============================================
@@ -51,9 +57,12 @@ function initCanvas() {
     const canvas = document.getElementById('bgCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     const particles = [];
+
     class Particle {
         constructor() {
             this.x = Math.random() * canvas.width;
@@ -68,21 +77,44 @@ function initCanvas() {
             if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
         }
         draw() {
-            const isDark = !document.body.classList.contains('light-mode');
-            ctx.fillStyle = `rgba(26, 188, 156, ${isDark ? 0.4 : 0.2})`;
-            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            const isLight = document.body.classList.contains('light-mode');
+            const alpha = isLight ? Math.random() * 0.3 + 0.1 : Math.random() * 0.5 + 0.2;
+            ctx.fillStyle = isLight ? `rgba(0, 0, 0, ${alpha})` : `rgba(0, 255, 255, ${alpha})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
         }
     }
+
     for (let i = 0; i < 80; i++) particles.push(new Particle());
+
     function animate() {
-        const isDark = !document.body.classList.contains('light-mode');
-        ctx.fillStyle = isDark ? 'rgba(10, 10, 10, 0.1)' : 'rgba(245, 245, 245, 0.1)';
+        const isLight = document.body.classList.contains('light-mode');
+        ctx.fillStyle = isLight ? 'rgba(240, 240, 240, 0.3)' : 'rgba(10, 10, 15, 0.15)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
         particles.forEach(p => { p.update(); p.draw(); });
+
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 100) {
+                    const alpha = isLight ? 0.1 * (1 - dist / 100) : 0.2 * (1 - dist / 100);
+                    ctx.strokeStyle = isLight ? `rgba(255, 0, 255, ${alpha})` : `rgba(0, 255, 255, ${alpha})`;
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
         requestAnimationFrame(animate);
     }
     animate();
-
 
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
@@ -90,71 +122,44 @@ function initCanvas() {
     });
 }
 
-// Theme Toggle Functionality Initialize theme from storage or default to dark
-const savedTheme = localStorage.getItem('theme') || window.theme || 'dark';
-window.theme = savedTheme;
+function applySavedTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
 
-if (savedTheme === 'light') {
-    document.body.classList.add('light-mode');
-} else {
-    document.body.classList.remove('light-mode');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        if (themeIcon) {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+        }
+    } else {
+        document.body.classList.remove('light-mode');
+        if (themeIcon) {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+        }
+    }
 }
 
-// Update Navbar for Login Status
-const buttons = document.getElementsByClassName('buttons')[0];
+function setupThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
+    if (!themeToggle || !themeIcon) return;
 
-function updateNavbar() {
-    if (!buttons) return;
-    const username = window.username || null;
-    const isRoot = !window.location.pathname.includes('/contributors/');
-    const basePath = isRoot ? '' : '../';
-    const isLight = document.body.classList.contains('light-mode');
-    
-    const themeButton = `
-        <button id="themeToggle" class="button" title="Toggle Theme">
-            <i class="fas ${isLight ? 'fa-sun' : 'fa-moon'}"></i>
-        </button>
-    `;
+    themeToggle.addEventListener('click', () => {
+        const isLight = document.body.classList.toggle('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
 
-    if (username) {
-        buttons.innerHTML = `
-        <span class="welcome-text">Welcome, ${username}</span>
-        <button class="button logout-btn" id='logout'>Logout</button>
-        <a class="button" href="https://github.com/dhairyagothi" target="_blank">GitHub</a>
-        <a class="button" href="${basePath}contributors/contributor.html">Contributors</a>
-        ${themeButton}`;
-
-        document.getElementById('logout').addEventListener('click', () => {
-            window.username = null;
-            updateNavbar();
-        });
-    } else {
-        buttons.innerHTML = `
-        <a class="button" href="${basePath}contributors/contributor.html">Contributors</a>
-        <a class="button" href="https://github.com/dhairyagothi" target="_blank">GitHub</a>
-        <a class="button login-btn" href="${basePath}public/Login.html">Log in</a>
-        ${themeButton}`;
-    }
-    
-    // Single, clean click controller execution
-    const toggleBtn = document.getElementById('themeToggle');
-    const toggleIcon = toggleBtn.querySelector('i');
-    
-    toggleBtn.addEventListener('click', () => {
-        const currentlyLight = document.body.classList.toggle('light-mode');
-        
-        if (currentlyLight) {
-            toggleIcon.className = 'fas fa-sun';
-            window.theme = 'light';
-            localStorage.setItem('theme', 'light');
+        if (isLight) {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
         } else {
-            toggleIcon.className = 'fas fa-moon';
-            window.theme = 'dark';
-            localStorage.setItem('theme', 'dark');
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
         }
     });
 }
-
 
 // ============================================
 // 4. PROJECT DATA (5 ELEMENTS FORMAT)
@@ -193,7 +198,7 @@ function fillTable() {
         ["Day 30", "Flappy-bird-game", "./public/Flappy-bird-main/index.html", "game canvas", "intermediate"],
         ["Day 31", "Password Manager", "./public/password%20manager/index.html", "javascript", "intermediate"],
         ["Day 32", "Missionaries & Cannibals", "./public/Missionaries&Cannibals/index.html", "game javascript", "intermediate"],
-        ["Day 33", "Weather Forcasting", "./public/Weather%20Forcasting/index.html", "weather api", "intermediate"],
+        ["Day 33", "Weather Forecasting", "./public/Weather%20Forcasting/index.html", "weather api", "intermediate"],
         ["Day 34", "Email Validator", "./public/email%20validator/index.html", "api javascript", "beginner"],
         ["Day 35", "Vanilla-JS-Calculator", "./public/Vanilla-JavaScript-Calculator-master/index.html", "javascript", "beginner"],
         ["Day 36", "Medical App", "./public/Medical_App/index.html", "javascript", "intermediate"],
@@ -250,7 +255,7 @@ function fillTable() {
         ["Day 87", "Breakout game", "./public/Breakout game/index.html", "game canvas", "intermediate"],
         ["Day 88", "Job dashboard", "./public/Job dashboard/jobs.html", "javascript", "intermediate"],
         ["Day 89", "N-Queen", "./public/N_Queen/index.html", "game javascript", "intermediate"],
-        ["Day 90", "Quize App Timer", "./public/QuizeApp Timer/index1.html", "javascript", "beginner"],
+        ["Day 90", "Quiz App Timer", "./public/QuizeApp Timer/index1.html", "javascript", "beginner"],
         ["Day 91", "Voting Application", "https://github.com/...", "api javascript", "intermediate"],
         ["Day 92", "Slide puzzle Game", "./public/Slide puzzle Game/index.html", "game javascript", "intermediate"],
         ["Day 93", "TextUtils", "https://github.com/...", "javascript", "beginner"],
@@ -276,7 +281,16 @@ function fillTable() {
         ["Day 113", "CPU Scheduler", "./public/CpuScheduler/index.html", "javascript", "intermediate"],
         ["Day 114", "EchoNotes", "./public/EchoNotes/index.html", "todo javascript", "intermediate"],
         ["Day 115", "Registration System", "https://render.com/...", "api javascript", "intermediate"],
-        ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html", "api javascript", "intermediate"]
+        ["Day 116", "AI Image Classifier", "./public/AI Image Classifier/index.html", "api javascript", "intermediate"],
+        ["Day 117", "ZEN TIMER", "./public/ZEN_TIMER/index.html", "timer css", "beginner"],
+        ["Day 118", "Random-Joke-Generator", "./public/RandomJokeGenerator/index.html", "api javascript", "beginner"]
+    ];
+
+    filteredData = [...projectData];
+    currentPage = 1;
+    renderTable();
+    createPagination();
+}
 
 // ============================================
 // 5. CORE FILTER & RENDER LOGIC
@@ -358,6 +372,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initCanvas();
     fetchRepoStats();
     fillTable();
+    applySavedTheme();
+    setupThemeToggle();
 
     // Search input
     document.getElementById('searchInput')?.addEventListener('input', applyFilters);
@@ -385,18 +401,4 @@ document.addEventListener('DOMContentLoaded', () => {
             applyFilters();
         });
     });
-
-    // Theme Toggle
-    const themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-        themeBtn.onclick = () => {
-            document.body.classList.toggle('light-mode');
-            const icon = themeBtn.querySelector('i');
-            if (icon) icon.className = document.body.classList.contains('light-mode') ? 'fas fa-sun' : 'fas fa-moon';
-        };
-    }
 });
-
- 
-
-    

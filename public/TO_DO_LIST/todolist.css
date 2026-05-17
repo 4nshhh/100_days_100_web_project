@@ -48,7 +48,7 @@ body {
   --card-bg: rgba(255,255,255,0.07);
   --card-border: rgba(255,255,255,0.15);
   --card-hover: rgba(255,255,255,0.12);
-  --text: #000000;
+  --text: rgb(255,126,126);
   --text-muted: rgba(240,232,255,0.55);
   --nav-bg: rgba(10,5,20,0.7);
   --tag-text: #111;

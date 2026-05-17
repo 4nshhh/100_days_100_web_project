@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jay Hind</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link href="../indianflag/flag.css" rel="stylesheet" />
     <link rel="icon" href="../favv.png" type="image/x-icon" />
   </head>
@@ -64,16 +64,11 @@
     </div>
 
     <!-- Background Music Controls -->
-<div class="music-controls">
-  <audio id="bgMusic" controls autoplay loop>
-    <source src="vande_mataram.mp3" type="audio/mpeg">
-  </audio>
-
-
-</div>
-    
-
-    
+    <div class="music-controls">
+      <audio id="bgMusic" controls autoplay loop>
+        <source src="vande_mataram.mp3" type="audio/mpeg">
+      </audio>
+    </div>
 
     <script>
       // Quotes data
@@ -137,7 +132,6 @@
       const quoteAuthor = document.querySelector(".author");
       const patriotImage = document.getElementById("patriot-image");
 
-      // Display current quote
       function displayQuote() {
         quoteText.textContent = quotes[currentQuoteIndex].text;
         quoteAuthor.textContent = quotes[currentQuoteIndex].author;
@@ -147,38 +141,30 @@
 
       displayQuote();
 
-      // Auto-change quotes every 5 seconds
       setInterval(() => {
-        currentQuoteIndex =
-          (currentQuoteIndex + 1) % quotes.length;
+        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
         displayQuote();
       }, 5000);
 
-      // Previous button
       document.getElementById("prev-quote").addEventListener("click", () => {
         currentQuoteIndex =
           (currentQuoteIndex - 1 + quotes.length) % quotes.length;
         displayQuote();
       });
 
-      // Next button
       document.getElementById("next-quote").addEventListener("click", () => {
         currentQuoteIndex =
           (currentQuoteIndex + 1) % quotes.length;
         displayQuote();
       });
 
-      // Get background music element
       const music = document.getElementById("bgMusic");
 
-      // Try autoplay when page loads
       window.addEventListener("load", () => {
-      music.play().catch(() => {
-    console.log("Autoplay blocked by browser");
-  });
-});
-      
-        
+        music.play().catch(() => {
+          console.log("Autoplay blocked by browser");
+        });
+      });
     </script>
   </body>
 </html>

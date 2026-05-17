@@ -121,16 +121,26 @@ function setClockStyleAndFormat(face, format) {
 
 function setClockFace(face) {
   const display = document.getElementById('display');
-
-  display.className =
-    `relative font-mono text-4xl md:text-5xl 
-     border-4 rounded-lg p-4 mb-4 ${face}`;
-
   const clock = document.getElementById('clock');
 
-  clock.className =
-    `relative font-mono text-4xl md:text-5xl 
-     border-4 rounded-lg p-4 ${face}`;
+  // Add transition effect
+  display.style.opacity = '0.7';
+  clock.style.opacity = '0.7';
+
+  // Update classes after brief delay for smooth transition
+  setTimeout(() => {
+    display.className =
+      `relative font-mono text-4xl md:text-5xl 
+       border-4 rounded-lg p-4 mb-4 ${face}`;
+
+    clock.className =
+      `relative font-mono text-4xl md:text-5xl 
+       border-4 rounded-lg p-4 ${face}`;
+
+    // Fade back in
+    display.style.opacity = '1';
+    clock.style.opacity = '1';
+  }, 150);
 }
 
 function getMonthName(monthNumber) {
@@ -158,12 +168,30 @@ function toggleAlarmMode() {
   const confirmButton =
     document.querySelector('#alarm-container button:nth-child(3)');
 
-  alarmInput.classList.toggle('hidden');
-  confirmButton.classList.toggle('hidden');
+  // Add smooth transition animations
+  if (alarmInput.classList.contains('hidden')) {
+    alarmInput.classList.remove('hidden');
+    confirmButton.classList.remove('hidden');
+
+    alarmInput.style.animation = 'slideDown 0.3s ease-out';
+    confirmButton.style.animation = 'slideDown 0.3s ease-out';
+  } else {
+    alarmInput.style.animation =
+      'slideDown 0.3s ease-out reverse';
+
+    confirmButton.style.animation =
+      'slideDown 0.3s ease-out reverse';
+
+    setTimeout(() => {
+      alarmInput.classList.add('hidden');
+      confirmButton.classList.add('hidden');
+    }, 300);
+  }
 }
 
 function setAlarm() {
-  const alarmTime = document.getElementById('alarm-time').value;
+  const alarmTime =
+    document.getElementById('alarm-time').value;
 
   if (!alarmTime) {
     alert("Please select a valid time.");
@@ -176,7 +204,8 @@ function setAlarm() {
   alarmTriggered = false;
 
   // Unlock audio for browser autoplay policy
-  const alarmSound = document.getElementById('alarm-sound');
+  const alarmSound =
+    document.getElementById('alarm-sound');
 
   alarmSound.load();
 
@@ -189,11 +218,51 @@ function setAlarm() {
       console.log("Audio initialized after user interaction.");
     });
 
+  // Show success animation
+  const confirmButton =
+    document.querySelector('#alarm-container button:nth-child(3)');
+
+  confirmButton.classList.add('success-animation');
+
+  // Create success notification
+  const successMsg = document.createElement('div');
+
+  successMsg.textContent =
+    `✓ Alarm set for ${alarmTime}`;
+
+  successMsg.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: rgba(34, 197, 94, 0.9);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-size: 1rem;
+    animation: slideDown 0.3s ease-out;
+    z-index: 2000;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+  `;
+
+  document.body.appendChild(successMsg);
+
+  setTimeout(() => {
+    confirmButton.classList.remove('success-animation');
+  }, 600);
+
+  setTimeout(() => {
+    successMsg.style.animation =
+      'slideDown 0.3s ease-out reverse';
+
+    setTimeout(() => successMsg.remove(), 300);
+  }, 3000);
+
   alert(`Alarm set for ${alarmTime}`);
 }
 
 function checkAlarm(currentTime) {
-  const alarmTime = localStorage.getItem('alarmTime');
+  const alarmTime =
+    localStorage.getItem('alarmTime');
 
   if (
     alarmTime &&
@@ -206,7 +275,8 @@ function checkAlarm(currentTime) {
 }
 
 function triggerAlarm() {
-  const alarmSound = document.getElementById('alarm-sound');
+  const alarmSound =
+    document.getElementById('alarm-sound');
 
   const alarmPopup =
     document.getElementById('alarm-popup');
@@ -226,6 +296,16 @@ function triggerAlarm() {
         "Browser blocked alarm sound. Please interact with the page first."
       );
     });
+
+  // Add pulsing effect to popup
+  setInterval(() => {
+    alarmPopup.style.animation = 'none';
+
+    setTimeout(() => {
+      alarmPopup.style.animation =
+        'alarmShake 0.5s ease-in-out';
+    }, 10);
+  }, 2000);
 }
 
 function stopAlarm() {
@@ -238,7 +318,14 @@ function stopAlarm() {
   alarmSound.pause();
   alarmSound.currentTime = 0;
 
-  alarmPopup.classList.add('hidden');
+  // Add smooth close animation
+  alarmPopup.style.animation =
+    'alarmEntrance 0.4s ease-out reverse';
+
+  setTimeout(() => {
+    alarmPopup.classList.add('hidden');
+    alarmPopup.style.animation = '';
+  }, 400);
 
   localStorage.removeItem('alarmTime');
 

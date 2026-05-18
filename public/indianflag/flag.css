@@ -91,13 +91,11 @@ body {
 .flag {
   height: 300px;
   width: 450px;
-  position: absolute;
-  left: 12px; 
-  top: 0;
+  position: relative; /* Kept from Main */
+  margin-top: -400px; /* Kept from Main */
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
   transform-origin: left center;
   animation: wave 2.5s infinite ease-in-out;
-  margin-top: 0; 
   z-index: 1;
 }
 

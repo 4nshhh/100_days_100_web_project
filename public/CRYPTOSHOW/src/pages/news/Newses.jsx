@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './News.css';
 
-const API_KEY = '6a569262d6fdab4a7f7e818dfd923dcabccb82eea4b99df29da7d3e88f5a6370';
+const API_KEY = import.meta.env.VITE_CRYPTOCOMPARE_KEY;
 
 const Newses = () => {
   const [articles, setArticles] = useState([]);

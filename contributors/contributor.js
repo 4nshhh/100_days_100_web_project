@@ -1,3 +1,120 @@
+const modal =
+document.getElementById("profileModal");
+
+const modalBody =
+document.getElementById("modalBody");
+
+const closeModal =
+document.getElementById("closeModal");
+
+
+closeModal?.addEventListener(
+"click",
+
+()=>{
+
+modal.style.display =
+"none";
+
+});
+
+
+window.addEventListener(
+"click",
+
+(e)=>{
+
+if(e.target===modal){
+
+modal.style.display=
+"none";
+
+}
+
+});
+
+async function openProfile(username) {
+
+    modal.style.display = "flex";
+
+    modalBody.innerHTML = `
+        <p>Loading profile...</p>
+    `;
+
+    try {
+
+        const response =
+        await fetch(
+            `https://api.github.com/users/${username}`
+        );
+
+        const user =
+        await response.json();
+
+        modalBody.innerHTML = `
+
+            <img
+            src="${user.avatar_url}"
+            >
+
+            <h2>
+            ${user.name || user.login}
+            </h2>
+
+            <p>
+            ${user.bio || "This contributor has not added a bio yet."}
+            </p>
+
+            <p>
+            Followers:
+            ${user.followers}
+            </p>
+
+            <p>
+            Public Repos:
+            ${user.public_repos}
+            </p>
+
+            <p>
+            Location:
+            ${user.location || "Not available"}
+            </p>
+
+            <p>
+            Joined:
+            ${new Date(
+                user.created_at
+            ).toLocaleDateString()}
+            </p>
+
+            <div class="popup-btn-container">
+
+                <a
+                href="${user.html_url}"
+                target="_blank"
+                class="github-btn"
+                >
+
+                View GitHub
+
+                </a>
+
+            </div>
+
+        `;
+
+    }
+
+    catch(error){
+
+        modalBody.innerHTML =
+        "<p>Failed to load profile</p>";
+
+        console.error(error);
+
+    }
+
+}
 // Use global REPO_OWNER and REPO_NAME defined in index.js
 
 let allContributors = [];

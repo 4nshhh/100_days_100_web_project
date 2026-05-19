@@ -1066,6 +1066,11 @@ main {
   border-radius: 4px;
 }
 
+.notes,
+.task-card {
+  transition: all 0.25s ease;
+}
+
 .action-row {
   display: flex;
   justify-content: flex-end;

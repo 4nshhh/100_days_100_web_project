@@ -138,6 +138,7 @@ const PROJECT_DATA = [
   ['Day 120', 'Typing Speed Test', './public/typing_test/index.html', 'html css js game', 'intermediate'],
   ['Day 121', 'InterviewSimulator', './public/InterviewSimulator/index.html','tool','intermediate'],
   ['Day 122', 'AstronomyDashboard', './public/AstronomyDashboard/astro.html','html css javascript api-javascript','Advanced']
+  ['Day 123', 'Pomodoro Timer', './public/Pomodoro_Timer/index.html', 'productivity tool', 'intermediate']
 ];
 
 // Alias for consistency

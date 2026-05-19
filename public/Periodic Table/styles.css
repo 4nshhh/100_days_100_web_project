@@ -9,7 +9,7 @@ body {
     min-height: 100vh;
     color: #333;
 }
-
+ 
 .table-container {
     display: grid;
     grid-template-columns: repeat(18, 65px);

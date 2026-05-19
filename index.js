@@ -233,6 +233,24 @@ function renderGrid() {
   const noResults = document.getElementById('noResults');
   if (!grid) return;
 
+  // Dynamically set items per page based on viewport width to match CSS column layouts synchronously
+
+  const width = window.innerWidth || document.documentElement.clientWidth || screen.width;
+
+  if (width <= 768) {
+
+    itemsPerPage = 6; // Mobile
+
+  } else if (width <= 1024) {
+
+    itemsPerPage = 6; // Tablet
+
+  } else {
+
+    itemsPerPage = 9; // Desktop
+
+  }
+  
   const filtered = PROJECTS.filter(([day, name, ,tags, cat]) => {
     const matchesFilter = activeFilter === 'all' || tags.toLowerCase().includes(activeFilter.toLowerCase());
     const q = searchQuery.toLowerCase();

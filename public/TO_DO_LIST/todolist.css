@@ -498,7 +498,7 @@ main {
 #task-input {
   flex: 1;
   min-width: 180px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.14);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-sm);
   padding: 12px 16px;
@@ -519,7 +519,7 @@ main {
 }
 
 #task-type-select {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.14);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
@@ -988,7 +988,7 @@ main {
 
 .task-panel,
 .documents-wrapper {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 26px;
@@ -1047,18 +1047,25 @@ main {
 
 .notes {
   width: 100%;
-  border-radius: 18px;
+  border-radius: 20px;
   padding: 18px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   transition: all 0.25s ease;
   animation: slideUp 0.35s ease;
+  overflow: hidden;
+  position: relative;
 }
 
 .notes:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.28),
+    0 0 18px rgba(255, 255, 255, 0.08);
 }
 
 .notes.editing {

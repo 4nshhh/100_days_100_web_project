@@ -118,6 +118,13 @@ function Add() {
     ? THEMES[currentTheme].card
     : typeColor;
 
+  const isLightTheme =
+    currentTheme === 'theme1' ||
+    currentTheme === 'theme2' ||
+    currentTheme === 'theme3';
+
+  note.style.color = isLightTheme ? '#1a1a1a' : '#ffffff';
+
   // Inner layout
   const noteWrapper = document.createElement('div');
   noteWrapper.style.cssText =
@@ -128,7 +135,14 @@ function Add() {
   taskText.className = 'task-text';
   taskText.innerText = text;
   taskText.setAttribute('contenteditable', 'false');
-  taskText.style.cssText = 'flex:1; line-height:1.4; word-break:break-word;';
+  taskText.style.cssText = `
+  flex:1;
+  line-height:1.5;
+  word-break:break-word;
+  font-size:15px;
+  font-weight:500;
+  color:${isLightTheme ? '#111' : '#fff'};
+`;
 
   taskText.addEventListener('dblclick', () => {
     taskText.setAttribute('contenteditable', 'true');
@@ -192,7 +206,7 @@ function Add() {
     'align-items:center',
     'justify-content:center',
     'transition:background 0.2s, color 0.2s',
-    'color:#333',
+    `color:${isLightTheme ? '#111' : '#fff'}`,
   ].join(';');
 
   tickBtn.addEventListener('click', (e) => {
@@ -220,7 +234,9 @@ function Add() {
   delBtn.classList.add('delete-btn');
 
   delBtn.style.cssText = [
-    'background:rgba(255,255,255,0.08)',
+    isLightTheme
+      ? 'background:rgba(0,0,0,0.06)'
+      : 'background:rgba(255,255,255,0.08)',
     'border:1px solid rgba(255,255,255,0.1)',
     'width:34px',
     'height:34px',
@@ -271,7 +287,7 @@ function Add() {
       'padding:2px 7px',
       'border-radius:20px',
       'background:rgba(0,0,0,0.12)',
-      'color:#333',
+      `color:${isLightTheme ? '#111' : '#fff'}`,
       'white-space:nowrap',
       'margin-top:4px',
       'align-self:flex-end',

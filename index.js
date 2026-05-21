@@ -177,8 +177,9 @@ const PROJECT_DATA = [
   ['Day 139', 'Ludo game', './public/Ludo-game/index.html', 'Html css javascript', 'intermediate'],
   ['Day 140', 'Big Sales Prediction',
  'https://github.com/dhairyagothi/100_days_100_web_project/tree/Main/public/BigSales-Prediction', 'machine learning python javascript', 'advanced'],
-  ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'game html css javascript', 'intermediate'],
-  ['Day 142', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
+  ['Day 141', 'Dice Roller', './public/Dice-Roller/main.html', 'html css javascript', 'intermediate'],
+  ['Day 142', 'Geo Guesser game', './public/geo-guesser/index.html', 'map game', 'intermediate'],
+
 ];
 // Alias for consistency
 const PROJECTS = PROJECT_DATA;

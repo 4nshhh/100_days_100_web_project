@@ -187,6 +187,7 @@ const PROJECT_DATA = [
   ['Day 144', 'Car Racing game', './public/racing game/index.html', 'html css js', 'intermediate'],
   ['Day 145', 'Magic 8 Ball', './public/magic-8ball/main.html', 'simulation html css javascript', 'beginner'],
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
+  ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
 ];
 // Alias for consistency
 const PROJECTS = PROJECT_DATA;

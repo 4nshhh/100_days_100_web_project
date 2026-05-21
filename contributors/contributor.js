@@ -96,6 +96,42 @@ window.addEventListener(
   }
 );
 
+function saveCache(key, data) {
+  localStorage.setItem(
+    key,
+    JSON.stringify({
+      timestamp: Date.now(),
+      data,
+    })
+  );
+}
+
+function loadCache(
+  key,
+  maxAge = 1000 * 60 * 10
+) {
+  const cached = localStorage.getItem(key);
+
+  if (!cached) return null;
+
+  try {
+    const parsed = JSON.parse(cached);
+
+    const isExpired =
+      Date.now() - parsed.timestamp > maxAge;
+
+    if (isExpired) {
+      localStorage.removeItem(key);
+
+      return null;
+    }
+
+    return parsed.data;
+  } catch {
+    return null;
+  }
+}
+
 async function openProfile(username, commits) {
   modal.style.display = 'flex';
 

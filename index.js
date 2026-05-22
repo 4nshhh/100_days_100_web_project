@@ -217,12 +217,18 @@ const PROJECT_DATA = [
   ['Day 146', 'Data Sructures Visualizer', './public/Data Structures Visualizer/index.html', 'visualizer', 'intermediate'],
   ['Day 147', 'Chronosphere', './public/Chronosphere/index.html', 'game canvas', 'intermediate'],
   ['Day 148', 'Contest Tracker', './public/ContestTracker/index.html', 'tool javascript', 'advanced'],
-  
+
 
   ['Day 149', 'GitHub Profile Battle', './public/GitHub-Profile-Battle/index.html', 'tool javascript', 'advanced'],
   ['Day 150', 'App Privacy Policy Generator', './public/AppPrivacyPolicyGenerator/index.html', 'tool javascript', 'intermediate'],
+  
+
   ['Day 151', 'Mini Carrom Game', './public/mini carrom/index.html', 'html css javascript', 'intermediate'],
   
+  
+  ['Day 152', 'Physics Ball Simulation', './public/PhysicsBallSimulation/index.html', 'html css javascript canvas', 'advanced'],
+  ['Day 153', 'Material3 Showcase', './public/Material3Showcase/index.html', 'tool javascript', 'intermediate'],
+  ['Day 154', 'FocusRoom', './public/FocusRoom/index.html', 'html css javascript productivity timer tasks ambient', 'intermediate'],
 ];
 const PROJECTS = PROJECT_DATA;
 
@@ -874,6 +880,8 @@ if (recentToggleBtn) {
 
 function showToast(message) {
   const toast = document.getElementById('toast');
+  if (!toast) return;
+
   toast.textContent = message;
   toast.classList.add('show');
 
@@ -889,6 +897,8 @@ document.addEventListener('click', (e) => {
   e.preventDefault();
   const projectDay = bookmarkBtn.dataset.id;
   const project = PROJECTS.find((item) => item[0] === projectDay);
+  if (!project) return;
+
   toggleBookmark(project);
 });
 
@@ -1154,6 +1164,10 @@ function initScrollBtn() {
 /* ============================================================
    INIT
    ============================================================ */
+function hasProjectGrid() {
+  return Boolean(document.getElementById('projectGrid'));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   updateNavbar();
@@ -1166,11 +1180,61 @@ document.addEventListener('DOMContentLoaded', () => {
   syncProjectCounts();
   fetchRepoStats();
   initScrollBtn();
+
+  if (hasProjectGrid()) {
+    initFilterChips();
+    initSearch();
+    initTechStackSearch();
+    renderGrid();
+    renderBookmarks();
+    renderRecentProjects();
+  }
 });
+
+
+
+(() => {
+    const initDirectMobileMenu = () => {
+        const menuToggle = document.getElementById('menuToggle');
+        const navButtons = document.getElementById('navButtons');
+
+        if (!menuToggle || !navButtons) return;
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menuToggle.classList.toggle('active');
+            navButtons.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+                menuToggle.classList.remove('active');
+                navButtons.classList.remove('active');
+            }
+        });
+
+        navButtons.addEventListener('click', (e) => {
+            if (e.target.closest('.btn') || e.target.closest('a') || e.target.closest('button')) {
+                menuToggle.classList.remove('active');
+                navButtons.classList.remove('active');
+            }
+        });
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initDirectMobileMenu);
+    } else {
+        initDirectMobileMenu();
+    }
+})();
+
+
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
 window.addEventListener('resize', () => {
-  renderGrid();
+  if (hasProjectGrid()) {
+    renderGrid();
+  }
 });
 
 /* ============================================================

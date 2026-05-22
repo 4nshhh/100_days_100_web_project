@@ -143,10 +143,8 @@ const CATEGORY_LABEL = {
 /* ============================================================
    GITHUB STATS
    ============================================================ */
-
 async function fetchRepoStats() {
 
-    // Fallback values if API fails or rate limit hits
     const fallback = { stars: 122, forks: 182, issues: 94, prs: 12 };
 
     const set = (id, val) => {
@@ -154,7 +152,6 @@ async function fetchRepoStats() {
         if (el) el.textContent = Number(val).toLocaleString();
     };
 
-    // Show fallback immediately so dashes never show
     set('starCount',  fallback.stars);
     set('forkCount',  fallback.forks);
     set('issueCount', fallback.issues);
@@ -169,7 +166,6 @@ async function fetchRepoStats() {
         const repo = await repoRes.json();
         const prs  = await prRes.json();
 
-        // Override fallback with real live values
         set('starCount',  repo.stargazers_count);
         set('forkCount',  repo.forks_count);
         set('issueCount', repo.open_issues_count - prs.total_count);
@@ -177,7 +173,6 @@ async function fetchRepoStats() {
 
     } catch (e) {
         console.warn("GitHub stats unavailable — showing fallback values:", e.message);
-        // Fallback already set above, nothing more needed
     }
 }
 // NOTE (difficulty): Generating content client-side must sanitize URLs and

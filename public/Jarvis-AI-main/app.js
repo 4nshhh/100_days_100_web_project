@@ -46,6 +46,15 @@ window.addEventListener('load', () => {
 });
 
 
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+    alert("Speech Recognition is not supported in this browser.");
+    status.textContent = "Speech Recognition not supported";
+} else {
+    const recognition = new SpeechRecognition();
+
+
 
 const messages = [
     "Initializing JARVIS...",
@@ -117,6 +126,7 @@ recognition.start();
 speak("Listening");
     speak("Listening");
 });
+}
 
 recognition.onend = () => {
     btn.classList.remove('active');

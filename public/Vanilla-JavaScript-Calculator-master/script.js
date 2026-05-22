@@ -516,15 +516,9 @@ window.addEventListener('keydown', (e) => {
   } else if(key === 'p') {
     matched=true;
     activeCalc.computeFunction('pi');
-  } else if(key === 's') {
-    matched=true;
-    activeCalc.computeFunction('sin');
   } else if(key === 'd') {
     matched=true;
     activeCalc.computeFunction('deg');
-  } else if(key === 's') {
-    matched=true;
-    activeCalc.computeFunction('pow');
   }
 
   if (matched) {

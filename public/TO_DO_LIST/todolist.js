@@ -1,6 +1,3 @@
-/* ==========================================================================
-   TaskFlow — Optimized JavaScript for Updated HTML & CSS
-   ========================================================================== */
 
 // 1. DOM Element References
 const taskInput = document.getElementById("task-input");

@@ -400,6 +400,7 @@ body.light-mode .navbar {
    ============================================================ */
 .hero {
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1656,6 +1657,20 @@ html {
     font-size: clamp(2.4rem, 12vw, 4.2rem);
   }
 
+  .hero-sub,
+  .hero-extra {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-actions {
+    margin-bottom: 2rem;
+  }
+
+  .hero-terminal {
+    opacity: 0.45;
+  }
+
   .stats-strip {
     gap: 0.5rem;
     padding: 0.5rem 1rem;
@@ -1680,6 +1695,20 @@ html {
 }
 
 @media (max-width: 480px) {
+  .hero {
+    padding: 80px 1.2rem 3rem;
+  }
+
+  .hero-headline {
+    font-size: clamp(2.1rem, 11vw, 3.4rem);
+  }
+
+  .hero-sub,
+  .hero-extra {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+
   .projects-section {
     padding: 3rem 1rem 6rem;
   }
@@ -1946,4 +1975,92 @@ body.light-mode .brand-mark {
 #scrollToTopBtn:hover {
   background-color: #007bff;
   transform: scale(1.1);
+}
+
+/* Tech Stack Dropdown - CLEAN VERSION */
+#techStackFilter {
+  width: 280px;
+  padding: 12px 24px 12px 20px;
+  border-radius: 30px;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: inherit;
+  margin-left: 300px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  padding-right: 40px;
+  transition: all 0.3s ease;
+  transform: rotate(0deg);
+}
+
+#techStackFilter:hover {
+  border-color: #667eea;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+#techStackFilter:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+#techStackFilter option {
+  background: #1a1a1a;
+  color: white;
+  padding: 10px;
+}
+
+/* Light mode */
+body.light-mode #techStackFilter {
+  background: white;
+  color: #333;
+  border-color: #ddd;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+body.light-mode #techStackFilter option {
+  background: white;
+  color: #333;
+}
+
+/* Align tech stack dropdown with search bar */
+.projects-header + div {
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+  #techStackFilter {
+    margin-left: 0;
+  }
+}
+
+.projects-inner {
+  text-align: left;
+}
+
+.tech-stack-wrapper {
+  text-align: left;
+  width: 100%;
+}
+
+#techStackFilter {
+  margin-left: 0 !important;
+  display: inline-block;
+}
+
+#particleCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
 }

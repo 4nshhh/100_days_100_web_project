@@ -1224,9 +1224,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollBtn();
 
   if (hasProjectGrid()) {
-    initFilterChips();
-    initSearch();
-    initTechStackSearch();
     renderGrid();
     renderBookmarks();
     renderRecentProjects();
@@ -1395,24 +1392,7 @@ function applyFilters(search, category) {
 
 document.addEventListener('DOMContentLoaded', () => {
   restoreStateFromURL();
-  const searchInput = document.getElementById('search') ||
-    document.querySelector('input[type="text"]') ||
-    document.querySelector('.search-input');
-  if (searchInput) {
-    searchInput.addEventListener('input', () => {
-      const { category } = getQueryParams();
-      updateURL(searchInput.value, category);
-      applyFilters(searchInput.value, category);
-    });
-  }
-  const categoryFilter = document.querySelector('select') ||
-    document.getElementById('category');
-  if (categoryFilter) {
-    categoryFilter.addEventListener('change', () => {
-      const { search } = getQueryParams();
-      updateURL(search, categoryFilter.value);
-      applyFilters(search, categoryFilter.value);
-    });
-  }
+  
+  // URL sync only — no extra input listeners
   window.addEventListener('popstate', () => restoreStateFromURL());
 });

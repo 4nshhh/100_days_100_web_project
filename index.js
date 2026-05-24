@@ -530,6 +530,7 @@ if (sortOption === 'difficulty') {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const pageItems = filtered.slice(startIndex, endIndex);
+  const fragment = document.createDocumentFragment();
 
   pageItems.forEach(([day, name, url, tags]) => {
     const category = getCategoryFromTags(tags, name);
@@ -562,9 +563,9 @@ if (sortOption === 'difficulty') {
             </div>
         `;
 
-    grid.appendChild(card);
+    fragment.appendChild(card);
   });
-
+  grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 }
 
@@ -922,15 +923,30 @@ function initFilterChips() {
 /* ============================================================
    LIVE SEARCH
    ============================================================ */
+function debounce(fn, delay = 300) {
+  let timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+
+    timeout = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+}
+
 function initSearch() {
   const input = document.getElementById('searchInput');
   if (!input) return;
 
-  input.addEventListener('input', () => {
-    searchQuery = input.value.trim();
-    currentPage = 1;
-    renderGrid();
-  });
+  input.addEventListener(
+    'input',
+    debounce(() => {
+      searchQuery = input.value.trim();
+      currentPage = 1;
+      renderGrid();
+    }, 300)
+  );
 }
 function initSorting() {
   const sortSelect = document.getElementById('sortProjects');
@@ -1169,9 +1185,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Re-render the grid when the browser window is resized to adapt pagination density instantly
-window.addEventListener('resize', () => {
-  renderGrid();
-});
+window.addEventListener(
+  'resize',
+  debounce(() => {
+    renderGrid();
+  }, 200)
+);
 
 /* ============================================================
    EXPOSE FUNCTIONS TO GLOBAL SCOPE

@@ -126,7 +126,7 @@ Open `index.html` in your browser.
 
 | Home Screen | Sidebar Functionality | 
 |-------------|----------|
-|<img src="https://files.catbox.moe/0s61g5.jpeg" width="400" height="500"/> | <img src="https://files.catbox.moe/739bp6.jpeg" width="400" height="500"/> |
+|<img src="https://files.catbox.moe/0s61g5.jpeg" width="600" height="1000"/> | <img src="https://files.catbox.moe/739bp6.jpeg" width="600" height="1000"/> |
 
 ---
 

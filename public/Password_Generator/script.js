@@ -1,243 +1,288 @@
-const warningMsg = document.getElementById("warningMsg");
-const inputSlider = document.querySelector("[data-lengthSlider]");
-const lengthDisplay = document.querySelector("[data-lengthNumber]");
+/**
+ * Secure Password Generator
+ * Pure vanilla JS — no dependencies, no frameworks.
+ */
 
-const passwordDisplay = document.querySelector("[data-passwordDisplay]");
-const copyBtn = document.querySelector("[data-copy]");
-const copyMsg = document.querySelector("[data-copyMsg]");
-const hideTimerText = document.getElementById("hideTimer");
-const uppercaseCheck = document.querySelector("#uppercase");
-const lowercaseCheck = document.querySelector("#lowercase");
-const numbersCheck = document.querySelector("#numbers");
-const symbolsCheck = document.querySelector("#symbols");
-const indicator = document.querySelector("[data-indicator]");
-const strengthText = document.querySelector("[data-strengthText]");
-const generateBtn = document.querySelector(".generateButton");
-const allCheckBox = document.querySelectorAll("input[type=checkbox]");
-const symbols = '~`!@#$%^&*()_-+={[}]|:;"<,>.?/';
+// ---------------------------------------------------------------------------
+// Character sets
+// ---------------------------------------------------------------------------
+const CHAR_SETS = {
+  uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+  lowercase: 'abcdefghijklmnopqrstuvwxyz',
+  numbers:   '0123456789',
+  symbols:   '!@#$%^&*()_+-=[]{}|;:,.<>?',
+};
 
+// ---------------------------------------------------------------------------
+// DOM references
+// ---------------------------------------------------------------------------
+const passwordOutput  = document.getElementById('password-output');
+const generateBtn     = document.getElementById('generate-btn');
+const regenerateBtn   = document.getElementById('regenerate-btn');
+const copyBtn         = document.getElementById('copy-btn');
+const lengthSlider    = document.getElementById('length-slider');
+const lengthDisplay   = document.getElementById('length-display');
+const sliderFill      = document.getElementById('slider-fill');
+const validationMsg   = document.getElementById('validation-msg');
+const strengthLabel   = document.getElementById('strength-label');
+const bars            = [
+  document.getElementById('bar-1'),
+  document.getElementById('bar-2'),
+  document.getElementById('bar-3'),
+  document.getElementById('bar-4'),
+];
+const toast           = document.getElementById('toast');
 
-//initially
-let password = "";
-let checkCount = 0;
-let hideTimeout;
-let countdownInterval;
-setIndicator("#ccc");
+// Checkbox inputs keyed by type name
+const checkboxes = {
+  uppercase: document.getElementById('uppercase'),
+  lowercase: document.getElementById('lowercase'),
+  numbers:   document.getElementById('numbers'),
+  symbols:   document.getElementById('symbols'),
+};
 
-let passwordLength = 10;
-handleSlider();
-handleCheckBoxChange();
-calcStrength();
-
-//set passwordLength
-function handleSlider() {
-    inputSlider.value = passwordLength;
-    lengthDisplay.innerText = passwordLength;
-
-    const min = Number(inputSlider.min);
-    const max = Number(inputSlider.max);
-
-    inputSlider.style.backgroundSize =
-        ((passwordLength - min) * 100 / (max - min)) + "% 100%";
+// ---------------------------------------------------------------------------
+// Cryptographically random integer in [0, max)
+// Uses crypto.getRandomValues when available, falls back to Math.random.
+// ---------------------------------------------------------------------------
+function secureRandom(max) {
+  if (window.crypto && window.crypto.getRandomValues) {
+    const arr = new Uint32Array(1);
+    window.crypto.getRandomValues(arr);
+    return arr[0] % max;
+  }
+  return Math.floor(Math.random() * max);
 }
 
-function setIndicator(color) {
-    indicator.style.backgroundColor = color;
-    indicator.style.boxShadow = `0px 0px 12px 1px ${color}`;
+// ---------------------------------------------------------------------------
+// Fisher-Yates shuffle (in-place, returns same array)
+// ---------------------------------------------------------------------------
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = secureRandom(i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
-function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
+// ---------------------------------------------------------------------------
+// Get the list of active character types selected by the user
+// ---------------------------------------------------------------------------
+function getSelectedTypes() {
+  return Object.keys(checkboxes).filter(key => checkboxes[key].checked);
 }
 
-function generateRandomNumber() {
-    return getRndInteger(0, 10);
+// ---------------------------------------------------------------------------
+// Determine password strength
+// Returns: 'weak' | 'medium' | 'strong'
+// Rules:
+//   Weak   — length < 8  OR  only 1 type selected
+//   Strong — length >= 16 AND all 4 types selected
+//   Medium — everything else
+// ---------------------------------------------------------------------------
+function getStrength(length, selectedTypes) {
+  const count = selectedTypes.length;
+  if (length < 8 || count === 1) return 'weak';
+  if (length >= 16 && count === 4) return 'strong';
+  return 'medium';
 }
 
-function generateLowerCase() {
-    return String.fromCharCode(getRndInteger(97, 123))
+// ---------------------------------------------------------------------------
+// Update the strength meter UI
+// ---------------------------------------------------------------------------
+function updateStrengthUI(strength) {
+  // Reset all bars
+  bars.forEach(bar => {
+    bar.className = 'bar';
+  });
+  strengthLabel.className = 'strength-label';
+
+  const config = {
+    weak:   { fill: 1, label: 'Weak',   cls: 'weak' },
+    medium: { fill: 2, label: 'Medium', cls: 'medium' },
+    strong: { fill: 4, label: 'Strong', cls: 'strong' },
+  };
+
+  if (!strength) {
+    strengthLabel.textContent = '—';
+    return;
+  }
+
+  const { fill, label, cls } = config[strength];
+  for (let i = 0; i < fill; i++) {
+    bars[i].classList.add(cls, 'active');
+  }
+  strengthLabel.classList.add(cls);
+  strengthLabel.textContent = label;
 }
 
-function generateUpperCase() {
-    return String.fromCharCode(getRndInteger(65, 91))
+// ---------------------------------------------------------------------------
+// Core password generation
+// ---------------------------------------------------------------------------
+function generatePassword() {
+  const selectedTypes = getSelectedTypes();
+
+  // Validate at least one type is selected
+  if (selectedTypes.length === 0) {
+    validationMsg.classList.add('visible');
+    passwordOutput.value = '';
+    updateStrengthUI(null);
+    return;
+  }
+
+  validationMsg.classList.remove('visible');
+
+  const length = parseInt(lengthSlider.value, 10);
+
+  // Build the combined pool from selected types
+  const pool = selectedTypes.map(type => CHAR_SETS[type]).join('');
+
+  // Guarantee at least one character from each selected type
+  const guaranteed = selectedTypes.map(type => {
+    const set = CHAR_SETS[type];
+    return set[secureRandom(set.length)];
+  });
+
+  // Fill the remaining positions from the full pool
+  const remaining = [];
+  for (let i = guaranteed.length; i < length; i++) {
+    remaining.push(pool[secureRandom(pool.length)]);
+  }
+
+  // Merge and shuffle so the guaranteed chars aren't always at the front
+  const passwordChars = shuffleArray([...guaranteed, ...remaining]);
+  const password = passwordChars.join('');
+
+  passwordOutput.value = password;
+
+  // Update strength indicator
+  const strength = getStrength(length, selectedTypes);
+  updateStrengthUI(strength);
 }
 
-function generateSymbol() {
-    const randNum = getRndInteger(0, symbols.length);
-    return symbols.charAt(randNum);
+// ---------------------------------------------------------------------------
+// Slider fill track update
+// ---------------------------------------------------------------------------
+function updateSliderFill() {
+  const min   = parseInt(lengthSlider.min, 10);
+  const max   = parseInt(lengthSlider.max, 10);
+  const value = parseInt(lengthSlider.value, 10);
+  const pct   = ((value - min) / (max - min)) * 100;
+  sliderFill.style.width = `${pct}%`;
 }
 
-function calcStrength() {
-    let hasUpper = false;
-    let hasLower = false;
-    let hasNum = false;
-    let hasSym = false;
-    if (uppercaseCheck.checked) hasUpper = true;
-    if (lowercaseCheck.checked) hasLower = true;
-    if (numbersCheck.checked) hasNum = true;
-    if (symbolsCheck.checked) hasSym = true;
+// ---------------------------------------------------------------------------
+// Slider input handler — live display + re-generate if a password exists
+// ---------------------------------------------------------------------------
+function onSliderInput() {
+  const val = lengthSlider.value;
 
-    if (hasUpper && hasLower && (hasNum || hasSym) && passwordLength >= 8) {
+  // Animate the length display number
+  lengthDisplay.classList.remove('pop');
+  void lengthDisplay.offsetWidth; // reflow to restart animation
+  lengthDisplay.classList.add('pop');
 
-      setIndicator("#0f0");
-      strengthText.innerText = "Strong";
-    } else if (
-      (hasLower || hasUpper) &&
-      (hasNum || hasSym) &&
-      passwordLength >= 6
-    ) {
-      setIndicator("#ff0");
-      strengthText.innerText = "Medium";
-    } else {
-      setIndicator("#f00");
-      strengthText.innerText = "Weak";
+  lengthDisplay.textContent = val;
+  lengthSlider.setAttribute('aria-valuenow', val);
+  updateSliderFill();
 
-    }
+  // Regenerate if there's already a password on screen
+  if (passwordOutput.value) {
+    generatePassword();
+  }
 }
 
-async function copyContent() {
-    try {
-        await navigator.clipboard.writeText(passwordDisplay.value);
-        copyMsg.innerText = "copied";
-    }
-    catch (e) {
-        copyMsg.innerText = "Failed";
-    }
-    //to make copy wala span visible
-    copyMsg.classList.add("active");
+// ---------------------------------------------------------------------------
+// Copy to clipboard
+// ---------------------------------------------------------------------------
+async function copyToClipboard() {
+  const password = passwordOutput.value;
+  if (!password) return;
 
-    setTimeout(() => {
-        copyMsg.classList.remove("active");
-    }, 2000);
+  try {
+    await navigator.clipboard.writeText(password);
+  } catch {
+    // Fallback for older browsers
+    passwordOutput.select();
+    document.execCommand('copy');
+    window.getSelection()?.removeAllRanges();
+  }
 
+  showToast();
 }
 
-function shufflePassword(array) {
-    //Fisher Yates Method
-    for (let i = array.length - 1; i > 0; i--) {
-        //random J, find out using random function
-        const j = Math.floor(Math.random() * (i + 1));
-        //swap number at i index and j index
-        const temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    let str = "";
-    array.forEach((el) => (str += el));
-    return str;
+// ---------------------------------------------------------------------------
+// Toast notification
+// ---------------------------------------------------------------------------
+let toastTimer = null;
+
+function showToast() {
+  if (toastTimer) clearTimeout(toastTimer);
+  toast.classList.add('show');
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+    toastTimer = null;
+  }, 2200);
 }
 
-function handleCheckBoxChange() {
-    checkCount = 0;
-    allCheckBox.forEach((checkbox) => {
-        if (checkbox.checked)
-            checkCount++;
-    });
-
-    //special condition
-    if (passwordLength < checkCount) {
-        passwordLength = checkCount;
-        handleSlider();
-    }
+// ---------------------------------------------------------------------------
+// Regenerate button — spin animation + new password
+// ---------------------------------------------------------------------------
+function onRegenerate() {
+  regenerateBtn.classList.remove('spinning');
+  void regenerateBtn.offsetWidth;
+  regenerateBtn.classList.add('spinning');
+  generatePassword();
+  regenerateBtn.addEventListener('animationend', () => {
+    regenerateBtn.classList.remove('spinning');
+  }, { once: true });
 }
 
-allCheckBox.forEach((checkbox)=>{
-    checkbox.addEventListener("change",()=>{
-        handleCheckBoxChange();
-        calcStrength();
-    });
+// ---------------------------------------------------------------------------
+// Checkbox change — re-validate and regenerate if a password exists
+// ---------------------------------------------------------------------------
+function onCheckboxChange() {
+  if (passwordOutput.value) {
+    generatePassword();
+  } else if (getSelectedTypes().length > 0) {
+    // Clear stale validation message when user re-selects a type
+    validationMsg.classList.remove('visible');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Keyboard accessibility — generate/copy with Enter/Space on buttons
+// (buttons already handle this natively, but we keep it explicit)
+// ---------------------------------------------------------------------------
+function onKeydown(e) {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const target = e.target;
+    if (target === generateBtn)  { e.preventDefault(); generatePassword(); }
+    if (target === copyBtn)      { e.preventDefault(); copyToClipboard(); }
+    if (target === regenerateBtn){ e.preventDefault(); onRegenerate(); }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Event listeners
+// ---------------------------------------------------------------------------
+generateBtn.addEventListener('click', generatePassword);
+regenerateBtn.addEventListener('click', onRegenerate);
+copyBtn.addEventListener('click', copyToClipboard);
+lengthSlider.addEventListener('input', onSliderInput);
+document.addEventListener('keydown', onKeydown);
+
+Object.values(checkboxes).forEach(cb => {
+  cb.addEventListener('change', onCheckboxChange);
 });
 
-inputSlider.addEventListener("input",(e)=>{
-    passwordLength = parseInt(e.target.value);
+// ---------------------------------------------------------------------------
+// Initialise on page load
+// ---------------------------------------------------------------------------
+function init() {
+  updateSliderFill();
+  lengthDisplay.textContent = lengthSlider.value;
+  generatePassword();
+}
 
-    handleSlider();     // update visible number
-    calcStrength();     // update strength
-});
-
-
-copyBtn.addEventListener('click', () => {
-    if (passwordDisplay.value)
-        copyContent();
-})
-
-generateBtn.addEventListener('click', () => {
-    //none of the checkbox are selected
-
-    if (checkCount == 0) {
-        warningMsg.innerText = "Please select at least one option";
-        return;
-    }
-
-    warningMsg.innerText = "";
-
-    if (passwordLength < checkCount) {
-        passwordLength = checkCount;
-        handleSlider();
-    }
-
-    // let's start the jouney to find new password
-    console.log("Starting the Journey");
-    //remove old password
-    password = "";
-
-    let funcArr = [];
-
-    if (uppercaseCheck.checked)
-        funcArr.push(generateUpperCase);
-
-    if (lowercaseCheck.checked)
-        funcArr.push(generateLowerCase);
-
-    if (numbersCheck.checked)
-        funcArr.push(generateRandomNumber);
-
-    if (symbolsCheck.checked)
-        funcArr.push(generateSymbol);
-
-    //compulsory addition
-    for (let i = 0; i < funcArr.length; i++) {
-        password += funcArr[i]();
-    }
-    console.log("COmpulsory adddition done");
-
-    //remaining adddition
-    for (let i = 0; i < passwordLength - funcArr.length; i++) {
-        let randIndex = getRndInteger(0, funcArr.length);
-        console.log("randIndex" + randIndex);
-        password += funcArr[randIndex]();
-    }
-    console.log("Remaining adddition done");
-    //shuffle the password
-    password = shufflePassword(Array.from(password));
-    console.log("Shuffling done");
-    //show in UI
-    passwordDisplay.value = password;
-    
-      clearTimeout(hideTimeout);
-      clearInterval(countdownInterval);
-
-      let timeLeft = 10;
-
-      hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
-
-      countdownInterval = setInterval(() => {
-        timeLeft--;
-
-        if(timeLeft > 0) {
-          hideTimerText.innerText = `Password will auto-hide in ${timeLeft}s`;
-        }
-        else {
-          clearInterval(countdownInterval);
-          }
-    }, 1000);
-
-    hideTimeout = setTimeout(() => {
-      passwordDisplay.value = "********";
-      hideTimerText.innerText = "Password hidden for security";
-      clearInterval(countdownInterval);
-    }, 10000);
-    console.log("UI adddition done");
-    //calculate strength
-    calcStrength();
-});
+init();

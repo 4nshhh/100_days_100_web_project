@@ -84,19 +84,21 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     color: white;
     padding: 100px 50px 50px;
     margin-top: 0;
 }
 
 .hero h1 {
-    font-size: 68px;
+    font-size: 4rem;
     font-weight: 700;
     margin-bottom: 20px;
-    max-width: 600px;
+    /* max-width: 600px; */
     line-height: 1.1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow: rgba(0, 0, 0, 0.8) 2px 2px 4px;
+    width: 700px;
+    padding-left: 35px ;
 }
 
 .hero > p {
@@ -104,6 +106,11 @@ body {
     margin-bottom: 10px;
     color: rgba(255, 255, 255, 0.9);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.p1{
+    position: relative;
+    left: -10px;
 }
 
 .hero-form {

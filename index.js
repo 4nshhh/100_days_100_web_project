@@ -49,7 +49,7 @@ const FILTER_CATEGORY_MAP = {
  * Uses the existing tag structure so no new data field is needed.
  */
 function getCategoryFromTags(tags, name) {
-  const tagStr = (tags || '').toLowerCase();
+  const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
   const nameStr = (name || '').toLowerCase();
 
   if (tagStr.includes('game')) return 'Games';
@@ -497,13 +497,13 @@ function renderGrid() {
     const matchesSearch = !q || q.split(/\s+/).every(term =>
       name.toLowerCase().includes(term) ||
       day.toLowerCase().includes(term) ||
-      (typeof tags === 'string' && tags.toLowerCase().includes(term))
+      ((Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase().includes(term))
     );
 
     // Tech stack dropdown filter
     let matchesTech = true;
     if (techStackFilter && techStackFilter !== 'all') {
-      const tagStr = (typeof tags === 'string' ? tags : '').toLowerCase();
+      const tagStr = (Array.isArray(tags) ? tags.join(' ') : (tags || '')).toLowerCase();
       matchesTech = tagStr.includes(techStackFilter.toLowerCase());
     }
 
@@ -801,7 +801,8 @@ function renderBookmarks() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
+    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
     const sourceUrl = getSourceUrl(url);
 
     card.innerHTML = `
@@ -853,7 +854,8 @@ function renderRecentProjects() {
     const category = getCategoryFromTags(tags, name);
     const card = document.createElement('div');
     card.className = 'project-card';
-    const tagsHTML = tags.split(' ').map((tag) => `<span class="tag">${tag}</span>`).join('');
+    const tagsArray = Array.isArray(tags) ? tags : (typeof tags === 'string' ? tags.split(/\s+/).filter(t => t) : []);
+    const tagsHTML = tagsArray.map((tag) => `<span class="tag">${tag}</span>`).join('');
     const isBookmarked = bookmarkedProjects.some((item) => item[0] === day);
     const sourceUrl = getSourceUrl(url);
 

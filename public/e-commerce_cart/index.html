@@ -4,9 +4,15 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AeroStride</title>
+
+  <title>AeroStride — Premium Footwear</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="index.css">
   <link rel="icon" href="../favv.png" type="image/x-icon" />
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -16,7 +22,7 @@
       --red-dark: #B01E20;
       --red-light: #FF4547;
       --black: #0A0A0A;
-       background-color: #00000080;
+      background-color: #00000080;
       --warm-gray: #E8E4DE;
       --mid-gray: #8A8680;
       --card-bg: #FFFFFF;
@@ -42,7 +48,7 @@
     .navbar {
       display: flex;
       align-items: center;
-    background-color: rgba(18, 168, 192, 0.2);
+      background-color: rgba(18, 168, 192, 0.2);
       height: 72px;
       padding: 0 40px;
       border-bottom: 1px solid rgba(92, 184, 190, 0.548);
@@ -113,7 +119,6 @@
     .cart-overlay.active { display: block; }
 
     /* ── SIDE CART PANEL ── */
-    /* Fixed panel: header + scrollable body + footer — no overflow on the panel itself */
     .cart-panel {
       position: fixed;
       top: 0; right: -440px;
@@ -130,7 +135,6 @@
     }
     .cart-panel.active { right: 0; }
 
-    /* sticky header inside panel */
     .cart-header {
       flex-shrink: 0;
       display: flex;
@@ -172,7 +176,6 @@
     #cart-close:hover { background: #e0ddd8; }
     #cart-close img { width: 12px; opacity: 0.5; }
 
-    /* scrollable middle */
     .cart-body {
       flex: 1;
       overflow-y: auto;
@@ -181,7 +184,6 @@
       background: #ffffff;
     }
 
-    /* empty state */
     .cart-empty {
       display: flex;
       flex-direction: column;
@@ -195,7 +197,6 @@
     }
     .cart-empty-icon { font-size: 44px; opacity: 0.25; }
 
-    /* cart item row */
     .cart-box {
       display: grid;
       grid-template-columns: 76px 1fr 32px;
@@ -235,7 +236,6 @@
 
     .cart-amt { font-size: 14px; font-weight: 500; color: var(--red); }
 
-    /* quantity stepper */
     .qty-stepper {
       display: inline-flex;
       align-items: center;
@@ -275,7 +275,6 @@
     .cart-quantity::-webkit-outer-spin-button,
     .cart-quantity::-webkit-inner-spin-button { -webkit-appearance: none; }
 
-    /* remove button */
     .cart-remove {
       width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center;
@@ -297,7 +296,6 @@
       stroke-linejoin: round;
     }
 
-    /* sticky footer */
     .cart-footer {
       flex-shrink: 0;
       padding: 16px 24px 28px;
@@ -584,6 +582,7 @@
   </style>
 </head>
 <body>
+<a href="/" class="project-back-button" style="position:fixed;left:18px;top:18px;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg, rgba(124,99,255,0.14), rgba(79,141,255,0.10));color:#fff;text-decoration:none;z-index:9999;font-weight:700;font-family:Inter, system-ui, sans-serif;box-shadow:0 8px 20px rgba(12,18,40,0.35);">← Back to Home</a>
 
   <!-- Navbar -->
   <header>
@@ -599,14 +598,13 @@
         </div>
       </div>
     </div>
-  </header>  
+  </header>
 
   <!-- Overlay (dims page when cart is open) -->
   <div class="cart-overlay" id="cart-overlay"></div>
 
-  <!-- Cart panel — lives outside header so z-index stacking is clean -->
+  <!-- Cart panel -->
   <div class="cart-panel" id="cart-panel">
-    <!-- sticky header -->
     <div class="cart-header">
       <div class="cart-header-left">
         <span class="cart-title">Your Cart</span>
@@ -617,7 +615,6 @@
       </div>
     </div>
 
-    <!-- scrollable items -->
     <div class="cart-body" id="cart-body">
       <div class="cart-empty" id="cart-empty">
         <span class="cart-empty-icon">🛒</span>
@@ -625,7 +622,6 @@
       </div>
     </div>
 
-    <!-- sticky footer -->
     <div class="cart-footer">
       <div class="total">
         <span class="total-title">Total</span>

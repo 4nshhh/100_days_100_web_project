@@ -1,9 +1,29 @@
 import { words } from "./data/words.js";
 
-const shootSound = new Audio("./sounds/shoot.mp3");
-const hitSound = new Audio("./sounds/hit.mp3");
-const destroySound = new Audio("./sounds/destroy.mp3");
-const gameOverSound = new Audio("./sounds/gameover.mp3");
+function createSound(src) {
+  const audio = new Audio(src);
+  audio.preload = "auto";
+  return audio;
+}
+
+function soundUrl(fileName) {
+  return new URL(`./sounds/${fileName}`, import.meta.url).href;
+}
+
+function playSound(audio) {
+  audio.currentTime = 0;
+
+  const playback = audio.play();
+
+  if (playback && typeof playback.catch === "function") {
+    playback.catch(() => {});
+  }
+}
+
+const shootSound = createSound(soundUrl("shoot.mp3"));
+const hitSound = createSound(soundUrl("hit.mp3"));
+const destroySound = createSound(soundUrl("destroy.mp3"));
+const gameOverSound = createSound(soundUrl("gameover.mp3"));
 
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
@@ -16,6 +36,7 @@ const startBtn = document.getElementById("startBtn");
 const backBtn = document.getElementById("backBtn");
 const restartBtn = document.getElementById("restartBtn");
 const gameOverScreen = document.getElementById("gameOverScreen");
+const hud = document.querySelector(".ui");
 
 const difficultyButtons =
   document.querySelectorAll(".difficulty");
@@ -59,6 +80,10 @@ let enemySpeed = 1.2;
 let enemySpawner = null;
 
 startBtn.addEventListener("click", () => {
+
+  [shootSound, hitSound, destroySound, gameOverSound].forEach(audio => {
+    audio.load();
+  });
 
   startScreen.style.display = "none";
 
@@ -114,6 +139,10 @@ function resetGame(){
 
   clearInterval(enemySpawner);
 
+  if(hud){
+    hud.style.display = "none";
+  }
+
 }
 
 function returnToMenu(){
@@ -128,6 +157,9 @@ function returnToMenu(){
   activeEnemy = null;
 
   gameOverScreen.style.display = "none";
+  if(hud){
+    hud.style.display = "none";
+  }
 
   startScreen.style.display = "flex";
 
@@ -158,6 +190,10 @@ function startGame(mode){
   }
 
   gameRunning = true;
+
+  if(hud){
+    hud.style.display = "block";
+  }
 
   createEnemies();
 
@@ -303,8 +339,7 @@ function drawEnemies(){
 
 function createBullet(enemy){
 
-  shootSound.currentTime = 0;
-  shootSound.play();
+  playSound(shootSound);
 
   bullets.push({
 
@@ -359,8 +394,7 @@ function drawBullets(){
 
     if(dist < 20){
 
-      hitSound.currentTime = 0;
-      hitSound.play();
+      playSound(hitSound);
 
       bullet.enemy.hit = true;
       bullet.enemy.hitTime = Date.now();
@@ -393,7 +427,7 @@ function gameLoop(){
 
 function gameOver(){
 
-  gameOverSound.play();
+  playSound(gameOverSound);
 
   gameRunning = false;
 
@@ -442,8 +476,7 @@ document.addEventListener("keydown",(e) => {
       activeEnemy.typed === activeEnemy.word
     ){
 
-      destroySound.currentTime = 0;
-      destroySound.play();
+      playSound(destroySound);
 
       enemies = enemies.filter(enemy => {
         return enemy !== activeEnemy;

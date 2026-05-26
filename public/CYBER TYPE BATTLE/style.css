@@ -222,6 +222,8 @@ canvas{
 .ui{
   position:absolute;
 
+  display:none;
+
   top:20px;
   left:110px;
 

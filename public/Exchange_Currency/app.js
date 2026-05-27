@@ -1,3 +1,4 @@
+let chartInstance = null;
 const BASE_URL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies";
 const FALLBACK_URL = "https://latest.currency-api.pages.dev/v1/currencies";
 
@@ -114,6 +115,8 @@ const updateExchangeRate = async () => {
 
   let finalAmount = amtVal * rate;
   msg.innerText = `${amtVal} ${fromCurr.value} = ${finalAmount.toFixed(2)} ${toCurr.value}`;
+  // Temporary sample (until API history is added)
+renderChart(["Day1", "Day2", "Day3"], [1, 2, 3]);
 };
 
 const updateFlag = (element) => {
@@ -163,4 +166,24 @@ const formatHistoricalData = (data) => {
         labels: labels,
         values: values
     };
+};
+const renderChart = (labels, values) => {
+    const ctx = document.getElementById("historyChart").getContext("2d");
+
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+
+    chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Exchange Rate History",
+                data: values,
+                borderWidth: 2,
+                fill: false
+            }]
+        }
+    });
 };

@@ -1809,5 +1809,14 @@
 "techStack":["tool","javascript","html","css"],
 "difficulty":"advanced",
 "projectPath":"./public/Share_Byte/index.html"
+},
+{
+ "projectNo":182,
+"projectName":"Web Kernal Simulator",
+"projectType":"Simulator",
+"projectDesc":"A linux based web kernal simulator allowing to perform basic tasks",
+"techStack":["javascript","html","css"],
+"difficulty":"advanced",
+"projectPath":"./public/Web-Kernal-simulator/index.html"
 }
 ]

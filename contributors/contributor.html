@@ -34,7 +34,6 @@
     <div class="ambient ambient-right" aria-hidden="true"></div>
     <div class="noise-layer" aria-hidden="true"></div>
 
-    <!-- ── NAVBAR ──────────────────────────────────────────── -->
     <div id="navbar-container"></div>
 
     <div class="container">
@@ -126,11 +125,8 @@
             basic to intermediate using HTML, CSS, and JS.
           </p>
           <p>
-            <strong
-              >&copy; <span id="Current-Year"></span> 100 Days, 100
-              Projects</strong
-            >
-            by Dhairya and Contributors.
+            <strong>&copy; <span id="Current-Year"></span> 100 Days, 100 Projects</strong> by Dhairya and
+            Contributors.
           </p>
         </div>
         <div>
@@ -188,25 +184,23 @@
       </div>
     </div>
     <button id="scrollBtn" aria-label="Back to top">
-      <svg class="progress-ring" viewBox="0 0 48 48">
-        <circle class="ring-track" cx="24" cy="24" r="22" />
-        <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22" />
-      </svg>
-      <i class="fas fa-arrow-up scroll-arrow"></i>
-      <span class="scroll-tooltip">Back to top</span>
+        <svg class="progress-ring" viewBox="0 0 48 48">
+            <circle class="ring-track" cx="24" cy="24" r="22"/>
+            <circle class="ring-fill" id="ringFill" cx="24" cy="24" r="22"/>
+        </svg>
+        <i class="fas fa-arrow-up scroll-arrow"></i>
+        <span class="scroll-tooltip">Back to top</span>
     </button>
     <div class="toast" id="toast"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
-    <!-- Add the new navbar.js file right before index.js -->
-    <script src="../navbar.js"></script>
+    <script src="
+https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="../index.js"></script>
     <script src="contributor.js"></script>
     <script>
-      document.getElementById("Current-Year").textContent =
-        new Date().getFullYear();
+      document.getElementById("Current-Year").textContent=new Date().getFullYear();
     </script>
+    <script src="../navbar.js"></script>
   </body>
 </html>

@@ -613,7 +613,6 @@ body.light-mode .hero-terminal-text {
   font-size: clamp(3rem, 9vw, 6.8rem);
   font-weight: 900;
   line-height: 0.92;
-  letter-spacing: -0.07em;
   color: var(--text-primary);
   margin-bottom: 1.25rem;
   opacity: 1;

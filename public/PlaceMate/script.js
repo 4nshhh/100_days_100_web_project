@@ -346,6 +346,16 @@ updateBtn.addEventListener("click", () => {
 
   skillsChart.update();
 
+  saveUserData({
+  dsa,
+  mock,
+  aptitude,
+  resume,
+  communication,
+  development
+  });
+
+
   const companyGrid =
     document.getElementById("companyGrid");
 
@@ -387,5 +397,49 @@ updateBtn.addEventListener("click", () => {
       </div>
     `;
   }
+
+});
+function saveUserData(data) {
+
+  localStorage.setItem(
+    "placemateUserData",
+    JSON.stringify(data)
+  );
+}
+
+function loadUserData() {
+
+  const savedData =
+    localStorage.getItem(
+      "placemateUserData"
+    );
+
+  if (!savedData) return;
+
+  const data = JSON.parse(savedData);
+
+  document.getElementById("dsaInput").value =
+    data.dsa;
+
+  document.getElementById("mockInput").value =
+    data.mock;
+
+  document.getElementById("aptitudeInput").value =
+    data.aptitude;
+
+  document.getElementById("resumeInput").value =
+    data.resume;
+
+  document.getElementById("communicationInput").value =
+    data.communication;
+
+  document.getElementById("developmentInput").value =
+    data.development;
+
+  updateBtn.click();
+}
+window.addEventListener("load", () => {
+
+  loadUserData();
 
 });

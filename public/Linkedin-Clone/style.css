@@ -1096,3 +1096,41 @@ a:hover {
     /* hide sort control on mobile */
     .sort-by { display: none; }
 }
+/* ── Navbar Section Switching ── */
+.hidden {
+  display: none !important;
+}
+
+.section-placeholder {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  padding: 60px 40px;
+  text-align: center;
+  color: #555;
+  margin-top: 8px;
+}
+
+.section-placeholder i {
+  font-size: 48px;
+  color: #0a66c2;
+  margin-bottom: 16px;
+}
+
+.section-placeholder h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.section-placeholder p {
+  font-size: 14px;
+  color: #666;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.mobile-bottom-nav a.active-link {
+  color: #0a66c2;
+}

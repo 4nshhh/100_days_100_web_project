@@ -335,6 +335,12 @@ body > header {
   isolation: isolate;
 }
 
+#navbar-container {
+  position: relative;
+  z-index: 9999;
+}
+
+body.light-mode .navbar {
 [data-theme="light"] .navbar {
   background: rgba(244, 246, 249, 0.92);
 }
@@ -2167,6 +2173,26 @@ body.light-mode .footer.homepage-footer .social-btn {
 
 #scrollBtn:hover .scroll-tooltip {
   opacity: 1;
+}
+
+#scrollBtn.completed {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+  animation: scrollBtnPulse 2s infinite;
+}
+
+@keyframes scrollBtnPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
 }
 
 /* ============================================================

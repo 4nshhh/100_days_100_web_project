@@ -1485,6 +1485,7 @@ function initScrollBtn() {
     const progress = docHeight > 0 ? scrollTop / docHeight : 0;
 
     btn.classList.toggle('show', scrollTop > 400);
+    btn.classList.toggle('completed', progress >= 0.98);
 
     if (ring) {
       ring.style.strokeDashoffset = circumference * (1 - progress);

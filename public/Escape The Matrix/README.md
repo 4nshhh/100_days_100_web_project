@@ -1,6 +1,6 @@
 # 🟢 ESCAPE THE MATRIX
 
-> *A classified infiltration protocol. Breach the system. Evade the trace. Escape.*
+> _A classified infiltration protocol. Breach the system. Evade the trace. Escape._
 
 A browser-based hacking terminal game with a futuristic cyberpunk aesthetic. Navigate five escalating security layers using real-feeling terminal commands, cipher solving, memory challenges, and split-second decision-making — all wrapped in a CRT-filtered, matrix rain world.
 
@@ -8,9 +8,9 @@ A browser-based hacking terminal game with a futuristic cyberpunk aesthetic. Nav
 
 ## 📸 Screenshots
 
-| Boot Sequence | Main Menu | Gameplay |
-|:---:|:---:|:---:|
-| ![Boot Sequence](assets/images/Boot.png) |![Main Menu](assets/images/Menu.png)  | ![Gameplay](assets/images/Gameplay.png) |
+|              Boot Sequence               |              Main Menu               |                Gameplay                 |
+| :--------------------------------------: | :----------------------------------: | :-------------------------------------: |
+| ![Boot Sequence](assets/images/Boot.png) | ![Main Menu](assets/images/Menu.png) | ![Gameplay](assets/images/Gameplay.png) |
 
 ---
 
@@ -35,27 +35,27 @@ A browser-based hacking terminal game with a futuristic cyberpunk aesthetic. Nav
 
 You play as a rogue agent attempting to escape the Matrix by breaching five successive security layers:
 
-| Level | Name | Mechanic |
-|:---:|---|---|
-| 1 | **Password Crack** | Guess the hidden code word using `crack`, `hint`, and `scan` commands. Partial match feedback (position + presence) guides each attempt. |
-| 2 | **Command Injection** | Execute a series of exact terminal commands (`ls -la`, `sudo su -`, etc.) to escalate privileges and extract credentials. |
-| 3 | **Trace Avoidance** | Solve five randomised cipher challenges (Caesar, binary, hex, ROT13, reversal) to reduce the rising trace meter before it hits 100%. |
-| 4 | **Firewall Puzzle** | A Simon-style memory game: watch a sequence of firewall nodes light up, then click them in the correct order. Three mistakes = lockout. |
-| 5 | **Escape Sequence** | Type three precise escape commands against a tight countdown timer with the fastest trace speed in the game. |
+| Level | Name                  | Mechanic                                                                                                                                 |
+| :---: | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+|   1   | **Password Crack**    | Guess the hidden code word using `crack`, `hint`, and `scan` commands. Partial match feedback (position + presence) guides each attempt. |
+|   2   | **Command Injection** | Execute a series of exact terminal commands (`ls -la`, `sudo su -`, etc.) to escalate privileges and extract credentials.                |
+|   3   | **Trace Avoidance**   | Solve five randomised cipher challenges (Caesar, binary, hex, ROT13, reversal) to reduce the rising trace meter before it hits 100%.     |
+|   4   | **Firewall Puzzle**   | A Simon-style memory game: watch a sequence of firewall nodes light up, then click them in the correct order. Three mistakes = lockout.  |
+|   5   | **Escape Sequence**   | Type three precise escape commands against a tight countdown timer with the fastest trace speed in the game.                             |
 
 ---
 
 ## 🛠 Technologies Used
 
-| Technology | Purpose |
-|---|---|
-| HTML5 | Semantic structure and screen layout |
-| CSS3 | Animations, keyframes, custom properties (variables), responsive grid |
-| Vanilla JavaScript (ES2020+) | Game engine, async/await level runners, DOM manipulation |
-| Canvas API | Matrix rain animation |
-| Web Audio API | Procedural sound effects (no audio files needed) |
-| localStorage | Save/load game progress |
-| Google Fonts | Orbitron (headings) + Share Tech Mono (terminal body) |
+| Technology                   | Purpose                                                               |
+| ---------------------------- | --------------------------------------------------------------------- |
+| HTML5                        | Semantic structure and screen layout                                  |
+| CSS3                         | Animations, keyframes, custom properties (variables), responsive grid |
+| Vanilla JavaScript (ES2020+) | Game engine, async/await level runners, DOM manipulation              |
+| Canvas API                   | Matrix rain animation                                                 |
+| Web Audio API                | Procedural sound effects (no audio files needed)                      |
+| localStorage                 | Save/load game progress                                               |
+| Google Fonts                 | Orbitron (headings) + Share Tech Mono (terminal body)                 |
 
 No frameworks. No build tools. No dependencies beyond a browser.
 
@@ -83,10 +83,12 @@ Escape-The-Matrix/
 No build step required. Works offline out of the box.
 
 **Option A — Double-click**
+
 1. Download or clone this repository
 2. Open `index.html` directly in any modern browser
 
 **Option B — Local server (recommended for development)**
+
 ```bash
 # Using Python
 python -m http.server 8080
@@ -97,6 +99,7 @@ npx serve .
 # Using VS Code
 # Install the "Live Server" extension, right-click index.html → Open with Live Server
 ```
+
 Then navigate to `http://localhost:8080`.
 
 **Browser compatibility:** Chrome 90+, Firefox 88+, Edge 90+, Safari 14+
@@ -134,6 +137,7 @@ Then navigate to `http://localhost:8080`.
 ## 👤 Author
 
 **Escape the Matrix** was designed and built as a portfolio project demonstrating:
+
 - Pure vanilla JS game architecture (no frameworks)
 - CSS animation mastery (keyframes, custom properties, clip-paths)
 - Web API usage (Canvas, Web Audio, localStorage)

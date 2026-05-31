@@ -12,7 +12,7 @@ An interactive movie discovery tool that cross references two contrasting genres
 ## Technologies Used
 - HTML
 - CSS
-- JavaScript
+- JavaScript 
 
 ## Installation/Setup
 1. Clone the repository.

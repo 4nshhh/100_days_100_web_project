@@ -20,7 +20,7 @@ const initializeTheme = () => {
 themeToggle.addEventListener('click', () => {
   const isDark = document.body.getAttribute('data-theme') === 'dark';
   
-  if (isDark) {
+  if (isDark) { 
     document.body.removeAttribute('data-theme');
     themeToggle.textContent = '🌙';
     localStorage.setItem('theme', 'light');

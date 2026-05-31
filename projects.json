@@ -2447,7 +2447,7 @@
       "css",
       "javascript"
     ],
-    "difficulty": "advanced",
+    "difficulty": "advanced", 
     "projectPath": "./public/Movie-Matcher/index.html"
   }
 ]

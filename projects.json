@@ -2437,8 +2437,23 @@
     "difficulty": "advanced",
     "projectPath": "./public/Complaint_Management_System/index.html"
   },
-    {
+{
     "projectNo": 196,
+    "projectName": "AirCast",
+    "projectType": "Tool",
+    "projectDesc": "Weather forecasting application with real-time weather updates and Air Quality Index (AQI) monitoring.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript",
+      "api",
+      "weather"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/Weather App with AQI/index.html"
+  },
+  {
+    "projectNo": 197,
     "projectName": "Dual-Genre Movie Matcher",
     "projectType": "Web Application",
     "projectDesc": "A web app to search the perfect movie. Comes with dark and light theme toggle.",
@@ -2447,7 +2462,7 @@
       "css",
       "javascript"
     ],
-    "difficulty": "advanced", 
+    "difficulty": "advanced",
     "projectPath": "./public/Movie-Matcher/index.html"
   }
 ]

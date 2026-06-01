@@ -2452,6 +2452,19 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Theme-toggler/src/App.jsx"
-  },  
+  },
+  {
+    "projectNo": 199,
+    "projectName": "Number Guessing Game",
+    "projectType": "UI / Animation",
+    "projectDesc": "A simple and interactive Number Guessing Game built using HTML, CSS, and JavaScript. The player must guess a randomly generated number between 1 and 100 within 10 attempts.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/NumberGuessGame/index.html"
+  }  
   
 ]

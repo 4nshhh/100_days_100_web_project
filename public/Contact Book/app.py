@@ -187,6 +187,19 @@ def dashboard():
         return redirect(url_for("login"))
 
     user_id = session["user_id"]
+    sort_order = request.args.get("sort", "asc")
+
+if sort_order == "desc":
+    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name.desc()).all()
+else:
+    contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name.asc()).all()
+
+    contact_count = len(contacts)
+
+    return render_template(
+        "dashboard.html",
+        contacts=contacts,
+        contact_count=contact_count
     contacts = Contact.query.filter_by(user_id=user_id).order_by(Contact.name).all()
 
     contact_count = len(contacts)

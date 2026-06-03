@@ -274,18 +274,32 @@ function escapeHTML(value) {
 function sanitizeUrl(url) {
   const raw = String(url || "").trim();
 
-  // Allow empty / anchor-only values as-is
+  // Allow empty / anchor-only values
   if (!raw || raw === "#") return raw || "#";
 
-  // Relative paths used for local demo files are safe
-  if (raw.startsWith("./") || raw.startsWith("../") || raw.startsWith("/")) {
+  // Allow relative paths used by project demos
+  if (
+    raw.startsWith("./") ||
+    raw.startsWith("../") ||
+    raw.startsWith("/")
+  ) {
+    return raw;
+  }
+  if (
+    !raw.includes(":") &&
+    (raw.includes(".html") ||
+      raw.startsWith("public/") ||
+      raw.startsWith("projects/"))
+  ) {
     return raw;
   }
 
-  // Allow standard web protocols only
-  if (/^https?:\/\//i.test(raw)) return raw;
+  // Allow http/https links
+  if (/^https?:\/\//i.test(raw)) {
+    return raw;
+  }
 
-  // Block everything else (javascript:, data:, vbscript:, blob:, etc.)
+  // Block unsafe schemes
   console.warn("[XSS] Blocked unsafe URL scheme:", raw);
   return "#";
 }
@@ -885,34 +899,42 @@ function renderGrid() {
   const pageItems = filtered.slice(startIndex, endIndex);
   const fragment = document.createDocumentFragment();
 
-  pageItems.forEach((project) => {
-    const day = project.day;
-    const name = project.projectName;
-    const url = project.projectPath;
-    const tags = project.techStack;
-    const category = getCategoryFromTags(tags, name);
-    const card = document.createElement("div");
-    const isBookmarked = bookmarkedProjects.some(
-      (item) => normalizeProjectEntry(item).day === day,
-    );
-    const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
-      day,
-      name,
-      url,
-      tags,
-      category,
-      isBookmarked,
-      showDescription: true,
-    });
+pageItems.forEach((project) => {
+  const day = project.day;
+  const name = project.projectName;
+  const url = project.projectPath;
+  const tags = project.techStack;
 
-    card.className = sourceOnly
-      ? "project-card source-only visible"
-      : "project-card visible";
-    card.innerHTML = html;
-    attachProjectCardInteraction(card, demoUrl, project);
+  const category = getCategoryFromTags(tags, name);
+  const card = document.createElement("div");
 
-    fragment.appendChild(card);
+  const isBookmarked = bookmarkedProjects.some(
+    (item) => normalizeProjectEntry(item).day === day,
+  );
+
+  const { html, demoUrl, sourceOnly } = buildProjectCardHTML({
+    day,
+    name,
+    url,
+    tags,
+    category,
+    isBookmarked,
+    showDescription: true,
   });
+
+  card.className = sourceOnly
+    ? "project-card source-only visible"
+    : "project-card visible";
+
+  card.innerHTML = html;
+  attachProjectCardInteraction(card, demoUrl, project);
+
+  fragment.appendChild(card);
+});
+
+
+
+
   grid.appendChild(fragment);
   renderPagination(filtered.length, totalPages);
 

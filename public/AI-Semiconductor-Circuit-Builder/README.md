@@ -146,8 +146,7 @@ Enjoy using NeuralForge - AI Semiconductor Circuit Builder! 🚀
 ---
 
 ## 📸 Screenshot
-
-<img src = "https://files.catbox.moe/801mzi.jpeg"/>
+<img width="1879" height="1614" alt="image" src="https://github.com/user-attachments/assets/c2e70484-cc12-430a-9e44-2286aacad358" />
 
 ---
 

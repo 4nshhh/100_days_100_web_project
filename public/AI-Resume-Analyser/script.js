@@ -69,6 +69,16 @@ const statWords =
 const statCharacters =
   document.getElementById("statCharacters");
 
+const loadingSection =
+  document.getElementById(
+    "loadingSection"
+  );
+
+const resultsSection =
+  document.getElementById(
+    "resultsSection"
+  );
+
 
 
 uploadBtn.addEventListener("click", () => {
@@ -89,7 +99,7 @@ resumeInput.addEventListener("change", () => {
 
     updateStats(file);
     extractResumeContent(file);
-    generateAnalysis();
+    startAnalysis();
   }
 });
 
@@ -145,7 +155,7 @@ dropZone.addEventListener(
       fileName.textContent =
         files[0].name;
 
-      generateAnalysis();
+      startAnalysis();
     }
   }
 );
@@ -184,6 +194,30 @@ function generateAnalysis() {
   updateBreakdown(atsScore);
 
   generateChart(atsScore);
+}
+
+function startAnalysis() {
+
+  resultsSection.style.display =
+    "none";
+
+  loadingSection.style.display =
+    "block";
+
+
+  setTimeout(() => {
+
+    loadingSection.style.display =
+      "none";
+
+    resultsSection.style.display =
+      "grid";
+
+
+    generateAnalysis();
+
+  }, 2500);
+
 }
 
 function animateMeter(score) {
@@ -521,6 +555,9 @@ function updateContentStats(text) {
 
   
 }
+
+resultsSection.style.display =
+  "grid";
 
 generateAnalysis();
 

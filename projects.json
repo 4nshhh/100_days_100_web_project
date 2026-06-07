@@ -2469,14 +2469,14 @@
     "projectNo": 198,
     "projectName": "Theme-Toggler",
     "projectType": "UI / Animation",
-    "projectDesc": "A responsive theme toggler that switches between light and dark modes and saves the user's preference using localStorage.",
+    "projectDesc": "A responsive theme toggler that switches between multiple premium themes (including Cyberpunk and Dracula) with smooth transitions.",
     "techStack": [
-      "react",
-      "tailwindcss",
+      "html",
+      "css",
       "javascript"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Theme-Toggler/src/App.jsx"
+    "projectPath": "./public/Theme-Toggler/index.html"
   },
   {
     "projectNo": 199,
@@ -2694,6 +2694,35 @@
   },
   {
     "projectNo": 215,
+    "projectName": "Mood-Based Music Recommender",
+    "projectType": "Web App",
+    "projectDesc": "An interactive web application that recommends music based on the user's current mood. Features a premium Spotify-inspired UI, smooth animations, and dynamic themes.",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Mood_Based_Music_Recommender/"
+  },
+  {
+    "projectNo": 216,
+    "projectName": "Gemini Clone",
+    "projectType": "AI",
+    "projectDesc": "A modern clone of the Google Gemini AI chatbot interface, integrated with Google's GenAI API for generating dynamic responses.",
+    "techStack": [
+      "react",
+      "javascript",
+      "html",
+      "css",
+      "api",
+      "vite"
+    ],
+    "difficulty": "advanced",
+    "projectPath": "./public/Gemini/index.html"
+  },
+  {
+    "projectNo": 217,
     "projectName": "SkillBridge Career Roadmap Explorer",
     "projectType": "Tool",
     "projectDesc": "A Next.js career guidance platform that helps students explore technology career paths, required skills, structured learning roadmaps, recommended projects, and curated learning resources.",

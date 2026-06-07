@@ -25,6 +25,26 @@
 [![oosmetrics](https://api.oosmetrics.com/api/v1/badge/achievement/504bb60b-df6f-4e90-94f7-123a64ba852d.svg)](https://oosmetrics.com/repo/dhairyagothi/100_days_100_web_project)
 </div>
 
+
+## Table of Contents
+
+- [🚀 100 Days 100 Web Projects](#-100-days-100-web-projects)
+- [🌟 About This Project](#-about-this-project)
+- [🚀 Live Demo](#-live-demo)
+- [📚 All Projects (205 Total)](#-all-projects-205-total)
+- [Getting Started](#getting-started)
+- [🚀 Quick Start](#-quick-start)
+- [🧩 Project Structure](#-project-structure)
+- [🤝 Contributing](#-contributing)
+- [🌐 Browser Compatibility](#-browser-compatibility)
+- [🎯 Learning Path](#-learning-path)
+- [🛠️ Technologies Used](#%EF%B8%8F-technologies-used)
+- [📞 Support & Community](#-support--community)
+- [📊 Repository Stats](#-repository-stats)
+- [⭐ Show Your Support](#-show-your-support)
+- [🏆 Contributors](#-contributors)
+
+
 ## 🌟 About This Project
 
 Welcome to **100 Days 100 Web Projects**! This is a comprehensive collection of **218+ web development projects** built using HTML, CSS, JavaScript, React, Node.js, and more.

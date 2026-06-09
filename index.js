@@ -1903,7 +1903,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   initClearAllFilters();
 
   try {
-    // Await the projects to be fetched
     await loadProjects();
 
     syncProjectCounts();
@@ -1915,6 +1914,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderBookmarks();
       renderRecentProjects();
     }
+
+    restoreStateFromURL();
 
     syncProjectCounts();
     fetchRepoStats();
@@ -1932,6 +1933,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     }
   }
+
+  const searchInput =
+    document.getElementById("search") ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector(".search-input");
+  if (searchInput) {
+    searchInput.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200),
+    );
+  }
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
 
 (() => {
@@ -2359,8 +2384,6 @@ initTheme();
   rebuild();
 })();
 
-// =============================================
-// PERSISTENT FILTERS & SEARCH — Issue #3320
 // =============================================
 
 function getQueryParams() {

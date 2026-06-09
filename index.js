@@ -141,15 +141,15 @@ function loadProjects() {
 
 // Start fetching immediately
 loadProjects().catch((err) => {
-    console.error('Critical initialization error:', err);
-    const grid = document.getElementById('projectGrid');
-    if (grid) {
-        grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
+  console.error('Critical initialization error:', err);
+  const grid = document.getElementById('projectGrid');
+  if (grid) {
+    grid.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-color, #333);">
             <h2><i class="fas fa-exclamation-triangle"></i> Failed to Load Projects</h2>
             <p>Please check your connection or try again later.</p>
             <p style="font-family: monospace; color: red;">${escapeHTML(err.message)}</p>
         </div>`;
-    }
+  }
 });
 
 /* ============================================================
@@ -181,8 +181,8 @@ function isSourceOnlyProject(day, tags) {
   const tagList = Array.isArray(tags)
     ? tags
     : String(tags || "")
-        .split(/\s+/)
-        .filter(Boolean);
+      .split(/\s+/)
+      .filter(Boolean);
   return tagList.includes(SOURCE_ONLY_TAG);
 }
 
@@ -225,7 +225,14 @@ function resolveProjectUrls(day, name, url, tags) {
       if (demoUrl.startsWith("./")) {
         demoUrl = basePrefix + demoUrl.substring(2);
       }
-    } catch (error) {}
+    } catch (error) { }
+  }
+  if (day === "Day 222") {
+    return {
+      demoUrl: "https://html-css-animation-01.netlify.app/",
+      sourceUrl: "https://github.com/dhairyagothi/100_day_100_web_project/blob/Main/public/Html_css_animation/index.html",
+      sourceOnly: false
+    };
   }
 
   return { demoUrl, sourceUrl, sourceOnly };
@@ -330,14 +337,15 @@ function buildProjectCardHTML({
   // derived from one.  sanitizeUrl() blocks javascript:, data:, vbscript:
   // and any other executable protocol while leaving valid http(s) / relative
   // paths untouched.
-  const safeDemoUrl   = sanitizeUrl(demoUrl);
+  const safeDemoUrl = sanitizeUrl(demoUrl);
   const safeSourceUrl = sanitizeUrl(sourceUrl);
+
 
   const tagsArray = Array.isArray(tags)
     ? tags.filter((t) => t !== SOURCE_ONLY_TAG)
     : String(tags || "")
-        .split(/\s+/)
-        .filter((t) => t && t !== SOURCE_ONLY_TAG);
+      .split(/\s+/)
+      .filter((t) => t && t !== SOURCE_ONLY_TAG);
 
   // SECURITY: escapeHTML on every tag token prevents <script> / event-handler
   // injection via the techStack field in projects.json.
@@ -349,9 +357,9 @@ function buildProjectCardHTML({
 
   // SECURITY: description, day, name and category are all escaped before
   // being written into innerHTML.
-  const description  = escapeHTML(getProjectDescription(project));
-  const safeDay      = escapeHTML(day);
-  const safeName     = escapeHTML(name);
+  const description = escapeHTML(getProjectDescription(project));
+  const safeDay = escapeHTML(day);
+  const safeName = escapeHTML(name);
   const safeCategory = escapeHTML(category);
 
   const difficulty = project ? project.difficulty || "" : "";
@@ -382,7 +390,7 @@ function buildProjectCardHTML({
                         <i class="fab fa-github" aria-hidden="true"></i> Code
                     </a>`;
 
-return {
+  return {
     html: `
             <div class="card-meta">
                 <span class="card-day">${safeDay}</span>
@@ -399,13 +407,12 @@ return {
 
             <h3 class="card-name">${safeName}</h3>
 
-            ${
-              showDescription
-                ? `<div class="card-description">
+            ${showDescription
+        ? `<div class="card-description">
     ${description}
 </div>`
-                : ""
-            }
+        : ""
+      }
             <div class="card-tags">${tagsHTML}</div>
             <div class="card-footer">
                 <div class="card-actions-left">
@@ -429,7 +436,7 @@ return {
 
 function attachProjectCardInteraction(card, demoUrl, projectData = null) {
   card.style.cursor = "pointer";
-  
+
   const activateCard = (e) => {
     if (e.target.closest("a, button")) return;
     if (!demoUrl) return;
@@ -546,9 +553,9 @@ function clearAllTechFilters() {
  * executable context.
  */
 function updateTechFilterDisplay() {
-  const container    = document.getElementById("activeTechFilters");
+  const container = document.getElementById("activeTechFilters");
   const tagsContainer = document.getElementById("techFilterTags");
-  const clearBtn     = document.getElementById("clearTechFilter");
+  const clearBtn = document.getElementById("clearTechFilter");
 
   if (!container || !tagsContainer) return;
 
@@ -1480,9 +1487,10 @@ const copyBookmarksBtn = document.getElementById("copyBookmarksBtn");
 
 if (bookmarkToggleBtn) {
   bookmarkToggleBtn.addEventListener("click", () => {
-    showAllBookmarks = !showAllBookmarks;
-    bookmarkToggleBtn.textContent = showAllBookmarks ? "Show Less" : "View All";
-    renderBookmarks();
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
@@ -1514,9 +1522,10 @@ if (copyBookmarksBtn) {
 
 if (recentToggleBtn) {
   recentToggleBtn.addEventListener("click", () => {
-    showAllRecent = !showAllRecent;
-    recentToggleBtn.textContent = showAllRecent ? "Show Less" : "View All";
-    renderRecentProjects();
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: "smooth" });
+    }
   });
 }
 
@@ -1938,7 +1947,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateGamifiedUI();
 
   try {
-    // Await the projects to be fetched
     await loadProjects();
 
     // Repair and synchronize format of stored completed projects
@@ -1957,6 +1965,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderRecentProjects();
     }
 
+    restoreStateFromURL();
+
     syncProjectCounts();
     fetchRepoStats();
     initScrollBtn();
@@ -1973,6 +1983,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
     }
   }
+
+  const searchInput =
+    document.getElementById("search") ||
+    document.querySelector('input[type="text"]') ||
+    document.querySelector(".search-input");
+  if (searchInput) {
+    searchInput.addEventListener(
+      "input",
+      debounce(() => {
+        const { category } = getQueryParams();
+        updateURL(searchInput.value, category);
+        applyFilters(searchInput.value, category);
+      }, 200),
+    );
+  }
+  const categoryFilter = document.getElementById("category");
+  if (categoryFilter) {
+    categoryFilter.addEventListener("change", () => {
+      const { search } = getQueryParams();
+      updateURL(search, categoryFilter.value);
+      applyFilters(search, categoryFilter.value);
+    });
+  }
+  window.addEventListener("popstate", () => restoreStateFromURL());
 });
 
 (() => {
@@ -2401,8 +2435,6 @@ initTheme();
 })();
 
 // =============================================
-// PERSISTENT FILTERS & SEARCH — Issue #3320
-// =============================================
 
 function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
@@ -2452,8 +2484,8 @@ function applyFilters(search, category) {
   renderGrid();
 }
 
-document.addEventListener("DOMContentLoaded",  () => {
- 
+document.addEventListener("DOMContentLoaded", () => {
+
   const searchInput =
     document.getElementById("search") ||
     document.querySelector('input[type="text"]') ||
@@ -2482,224 +2514,3 @@ document.addEventListener("DOMContentLoaded",  () => {
 
 /* ============================================================
    GAMIFIED DEVELOPER TRACKER ENGINE
-============================================================ */
-
-const LEVEL_THRESHOLDS = [
-  { level: 1, name: "Script Kiddie", xp: 0 },
-  { level: 2, name: "CSS Whisperer", xp: 100 },
-  { level: 3, name: "Frontend Artisan", xp: 250 },
-  { level: 4, name: "DOM Dominator", xp: 500 },
-  { level: 5, name: "Production Ready", xp: 1000 },
-  { level: 6, name: "Full-Stack Magician", xp: 2000 },
-  { level: 7, name: "Software Architect", xp: 4000 }
-];
-
-function getProjectXP(difficulty) {
-  const d = (difficulty || "").toLowerCase().trim();
-  if (d === 'beginner' || d === 'easy') return 10;
-  if (d === 'advanced' || d === 'hard' || d === 'expert') return 50;
-  return 25; // default / intermediate
-}
-
-function calculateTotalXP() {
-  let xp = 0;
-  if (!Array.isArray(completedProjects)) {
-    completedProjects = [];
-  }
-  completedProjects.forEach(p => {
-    if (!p) return;
-    const normP = normalizeProjectEntry(p);
-    const original = PROJECTS.find(item => item.projectName === normP.name || item.day === normP.day);
-    const difficulty = original ? original.difficulty : (p.difficulty || "intermediate");
-    xp += getProjectXP(difficulty);
-  });
-  return xp;
-}
-
-function calculateLevel(xp) {
-  let current = LEVEL_THRESHOLDS[0];
-  for (let i = 0; i < LEVEL_THRESHOLDS.length; i++) {
-    if (xp >= LEVEL_THRESHOLDS[i].xp) {
-      current = LEVEL_THRESHOLDS[i];
-    } else {
-      break;
-    }
-  }
-  return current;
-}
-
-function getNextLevelDetails(xp) {
-  const current = calculateLevel(xp);
-  const currentIndex = LEVEL_THRESHOLDS.findIndex(t => t.level === current.level);
-  if (currentIndex < LEVEL_THRESHOLDS.length - 1) {
-    const next = LEVEL_THRESHOLDS[currentIndex + 1];
-    const prevXPRequired = current.xp;
-    const progressXP = xp - prevXPRequired;
-    const rangeXP = next.xp - prevXPRequired;
-    const percent = Math.min(Math.round((progressXP / rangeXP) * 100), 100);
-    return {
-      nextName: next.name,
-      nextXP: next.xp,
-      percent: percent,
-      remaining: next.xp - xp
-    };
-  } else {
-    return {
-      nextName: "Max Level!",
-      nextXP: xp,
-      percent: 100,
-      remaining: 0
-    };
-  }
-}
-
-function initStreak() {
-  const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
-  const lastVisit = localStorage.getItem('lastVisitDate');
-  let streak = parseInt(localStorage.getItem('streakCount') || '0', 10);
-
-  if (!lastVisit) {
-    streak = 1;
-  } else {
-    const lastVisitDateObj = new Date(lastVisit);
-    const todayDateObj = new Date(todayStr);
-    const diffTime = todayDateObj.getTime() - lastVisitDateObj.getTime();
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    if (lastVisit === todayStr) {
-      // Same day, streak unchanged
-    } else if (diffDays === 1) {
-      // Consecutive day!
-      streak += 1;
-    } else {
-      // Gap too large, reset streak
-      streak = 1;
-    }
-  }
-  localStorage.setItem('lastVisitDate', todayStr);
-  localStorage.setItem('streakCount', streak.toString());
-}
-
-function triggerLevelUpModal(levelInfo) {
-  const modal = document.createElement("div");
-  modal.className = "level-up-modal";
-  modal.innerHTML = `
-    <div class="level-up-modal-content">
-      <div class="level-up-star">⭐</div>
-      <h2>LEVEL UP!</h2>
-      <p class="modal-level-text">You have reached Level ${levelInfo.level}</p>
-      <p class="modal-title-text">${levelInfo.name}</p>
-      <button class="level-up-close-btn" onclick="this.closest('.level-up-modal').remove()">LFG! 🚀</button>
-    </div>
-  `;
-  document.body.appendChild(modal);
-}
-
-function updateGamifiedUI(prevLevel = null) {
-  const totalXP = calculateTotalXP();
-  const currentLevel = calculateLevel(totalXP);
-  const nextDetails = getNextLevelDetails(totalXP);
-
-  if (prevLevel && currentLevel.level > prevLevel.level) {
-    triggerLevelUpModal(currentLevel);
-  }
-
-  const userLevelBadge = document.getElementById("userLevelBadge");
-  const userCurrentXP = document.getElementById("userCurrentXP");
-  const userNextXP = document.getElementById("userNextXP");
-  const userXPBarFill = document.getElementById("userXPBarFill");
-
-  if (userLevelBadge) {
-    userLevelBadge.textContent = `Level ${currentLevel.level}: ${currentLevel.name}`;
-  }
-  if (userCurrentXP) {
-    userCurrentXP.textContent = `${totalXP} Total XP`;
-  }
-  if (userNextXP) {
-    if (nextDetails.remaining > 0) {
-      userNextXP.textContent = `${nextDetails.remaining} XP to Level ${currentLevel.level + 1} (${nextDetails.nextName})`;
-    } else {
-      userNextXP.textContent = "Max Level Reached! You are a master.";
-    }
-  }
-  if (userXPBarFill) {
-    userXPBarFill.style.width = `${nextDetails.percent}%`;
-  }
-
-  const userStreakBadge = document.getElementById("userStreakBadge");
-  if (userStreakBadge) {
-    const streak = parseInt(localStorage.getItem("streakCount") || "1", 10);
-    userStreakBadge.textContent = `🔥 ${streak} Day Streak`;
-  }
-}
-
-function repairCompletedProjects() {
-  if (!Array.isArray(completedProjects)) {
-    completedProjects = [];
-    return;
-  }
-  completedProjects = completedProjects.map(item => {
-    if (!item) return null;
-    let day = "";
-    if (typeof item === 'string') {
-      day = item;
-    } else if (Array.isArray(item)) {
-      day = item[0];
-    } else {
-      day = item.day;
-    }
-    const match = PROJECTS.find(p => p.day === day);
-    return match || item;
-  }).filter(Boolean);
-  
-  try {
-    localStorage.setItem("completedProjects", JSON.stringify(completedProjects));
-  } catch (err) {
-    console.warn("Could not save repaired completed projects", err);
-  }
-}
-
-function toggleCompleted(project) {
-  const normProject = normalizeProjectEntry(project);
-  const day = normProject.day;
-  const isCompleted = completedProjects.some(p => normalizeProjectEntry(p).day === day);
-
-  const prevXP = calculateTotalXP();
-  const prevLevel = calculateLevel(prevXP);
-  
-  const difficulty = project.difficulty || normProject.difficulty || "intermediate";
-
-  if (isCompleted) {
-    completedProjects = completedProjects.filter(p => normalizeProjectEntry(p).day !== day);
-    localStorage.setItem("completedProjects", JSON.stringify(completedProjects));
-    showToast(`Removed from Completed: -${getProjectXP(difficulty)} XP`);
-  } else {
-    // Check if not already added to avoid duplicates
-    if (!completedProjects.some(p => normalizeProjectEntry(p).day === day)) {
-      completedProjects.push(project);
-      localStorage.setItem("completedProjects", JSON.stringify(completedProjects));
-    }
-    showToast(`🎉 Project Completed! +${getProjectXP(difficulty)} XP Earned`);
-  }
-
-  updateGamifiedUI(prevLevel);
-
-  renderGrid();
-  if (typeof renderRecentProjects === "function") renderRecentProjects();
-  if (typeof renderBookmarks === "function") renderBookmarks();
-}
-
-// Global click delegation for the complete button
-document.addEventListener("click", (e) => {
-  const completeBtn = e.target.closest(".complete-btn");
-  if (!completeBtn) return;
-
-  e.preventDefault();
-  e.stopPropagation();
-  const projectDay = completeBtn.dataset.id;
-  const project = PROJECTS.find((item) => item.day === projectDay);
-  if (!project) return;
-
-  toggleCompleted(project);
-});

@@ -2797,5 +2797,18 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/AI-Tools-Hub/index.html"
+  },
+  {
+    "projectNo": 222,
+    "projectName": "HTML & CSS Animation",
+    "projectType": "Web App",
+    "projectDesc": "Collection of HTML/CSS animations demonstrating keyframe effects and transitions.",
+    "techStack": [
+      "html",
+      "css",
+      "animation"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/Html_css_animation/index.html"
   }
 ]

@@ -159,6 +159,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     const completed = learningProgress.completedTopics.length;
     const percentage = total ? Math.round((completed / total) * 100) : 0;
 
+    const completedTopicsCount =
+  document.getElementById(
+    'completedTopicsCount'
+  );
+
+const totalTopicsCount =
+  document.getElementById(
+    'totalTopicsCount'
+  );
+
+const progressPercentageCard =
+  document.getElementById(
+    'progressPercentageCard'
+  );
+
+if (completedTopicsCount) {
+  completedTopicsCount.textContent =
+    completed;
+}
+
+if (totalTopicsCount) {
+  totalTopicsCount.textContent =
+    total;
+}
+
+if (progressPercentageCard) {
+  progressPercentageCard.textContent =
+    percentage + '%';
+}
+
     const fill = document.getElementById('overallProgressFill');
     const text = document.getElementById('overallProgressText');
 
@@ -1010,13 +1040,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   loadProgress();
 
-  document
-    .getElementById('continueLearningBtn')
-    ?.addEventListener('click', () => {
-      if (learningProgress.lastTopic) {
-        window.location.hash = '#' + learningProgress.lastTopic;
-      }
-    });
+document
+  .getElementById('continueLearningBtn')
+  ?.addEventListener('click', () => {
+
+    if (!learningProgress.lastTopic) {
+
+      showToast?.(
+        'Start a lesson to track progress'
+      );
+
+      return;
+    }
+
+    window.location.hash =
+      '#' + learningProgress.lastTopic;
+  });
 
   await loadQuizData();
   await loadRegistry();

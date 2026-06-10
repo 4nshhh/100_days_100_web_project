@@ -312,24 +312,34 @@ const persistSaved = (gradients) => {
 /** Save the current gradient to favorites */
 const saveGradient = () => {
   const saved = loadSaved();
+  const css = buildGradientCSS();
+
+  const alreadyExists = saved.some(
+    (gradient) => gradient.css === css
+  );
+
+  if (alreadyExists) {
+    showToast('This gradient is already saved');
+    return;
+  }
+
   const gradient = {
     id: Date.now(),
     type: state.type,
     angle: state.angle,
     colors: [...state.colors],
-    css: buildGradientCSS(),
+    css,
   };
 
   saved.unshift(gradient);
 
-  // Limit to 20 saved gradients
   if (saved.length > 20) {
     saved.pop();
   }
 
   persistSaved(saved);
   renderSavedGrid();
-  showToast("Gradient saved! 💾");
+  showToast('Gradient saved! 💾');
 };
 
 /**

@@ -2740,7 +2740,7 @@
       "vite"
     ],
     "difficulty": "advanced",
-    "projectPath": "./public/Gemini/index.html"
+    "projectPath": "./public/Gemini/dist/index.html"
   },
   {
     "projectNo": 218,

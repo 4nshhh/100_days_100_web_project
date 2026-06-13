@@ -2877,5 +2877,17 @@
     ],
     "difficulty": "advanced",
     "projectPath": "./public/Word_Jumble/index.html"
-  }
+  },
+  {
+    "projectNo": 228,
+    "projectName": "MyCalendar",
+    "projectType": "Tool",
+    "projectDesc": "An interactive festival and event calendar with notes, themes, and persistent storage using localStorage.",
+    "techStack": [
+      "javascript",
+      "calendar"
+    ],
+    "difficulty": "beginner",
+    "projectPath": "./public/MyCalendar/index.html"
+  } 
 ]

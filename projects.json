@@ -2920,5 +2920,18 @@
   ],
   "difficulty": "intermediate",
   "projectPath": "./public/UnitVerse/index.html"
-  }
+  },
+  {
+  "projectNo": 231,
+  "projectName": "Whos's That Pokemon Game",
+  "projectType": "Game",
+  "projectDesc": "An interactive classic who's that pokemon game. It comes with classic fonts and a score tracker",
+  "techStack": [
+    "html", 
+    "css", 
+    "javascript"
+  ],
+  "difficulty": "advanced",
+  "projectPath": "./public/WhosThatPokemon/index.html"
+  }  
 ]

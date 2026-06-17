@@ -2920,5 +2920,18 @@
     ],
     "difficulty": "intermediate",
     "projectPath": "./public/UnitVerse/index.html"
+  },
+  {
+    "projectNo": 231,
+    "projectName": "LayerText",
+    "projectType": "Tool",
+    "projectDesc": "CSS layered text animation generator for Frontend devs",
+    "techStack": [
+      "html",
+      "css",
+      "javascript"
+    ],
+    "difficulty": "intermediate",
+    "projectPath": "./public/css-animation/index.html"
   }
 ]
